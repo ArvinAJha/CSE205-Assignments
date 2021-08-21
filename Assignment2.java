@@ -1,21 +1,20 @@
 import java.util.Scanner;
 
 public class Assignment2 {
+    public static void main(String[] args) {
 
-    // variables for all number values required
-    private static int minNum; 
-    private static int largeOdd; 
-    private static int negativeNumCount;
-    private static int sumOfEvenInt;
+         // variables for all number values required
+    int minNum = 0; 
+    int largeOdd = 0; 
+    int negativeNumCount = 0;
+    int sumOfEvenInt = 0;
 
     // constants for all messages to print out
-    private static final String MIN_NUM_STRING = "The minimum integer is ";
-    private static final String LARGE_ODD_STRING = "The largest odd integer in the sequence is ";
-    private static final String NEG_NUM_COUNT_STRING = "The count of negative integers in the sequence is ";
-    private static final String SUM_OF_EVEN_INTS_STRING = "The sum of even integers is ";
+    final String MIN_NUM_STRING = "The minimum integer is ";
+    final String LARGE_ODD_STRING = "The largest odd integer in the sequence is ";
+    final String NEG_NUM_COUNT_STRING = "The count of negative integers in the sequence is ";
+    final String SUM_OF_EVEN_INTS_STRING = "The sum of even integers is ";
 
-
-    public static void main(String[] args) {
         
         Scanner reader = new Scanner(System.in);
         
