@@ -20,6 +20,7 @@ public class Assignment2 {
         Scanner reader = new Scanner(System.in);
         
         int nextNumber = reader.nextInt();
+        minNum = nextNumber;
 
         while(nextNumber != 0) {
 
@@ -28,10 +29,12 @@ public class Assignment2 {
             }
 
             if(nextNumber % 2 == 0) {               //if number is event
+
                 sumOfEvenInt += nextNumber;         //add new number to other even numbers
-            } else if(nextNumber % 2 != 0) {                                //otherwise nunmber is odd
+
+            } else if(nextNumber % 2 != 0) {        //otherwise nunmber is odd
                 
-                if( nextNumber > largeOdd) {        //see if new odd number can be the largest odd number
+                if(nextNumber > largeOdd) {        //see if new odd number can be the largest odd number
                     largeOdd = nextNumber;
                 }
             }
