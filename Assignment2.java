@@ -1,19 +1,26 @@
+// Assignment #: 1
+// Name: Arvin Jha
+// StudentID: 1221497264
+// Lecture: 10:10AM - 11:00AM
+// Time took you to complete the assignment: 1 hour 30 minutes
+// Description: This class reads any number of integers and finds the minimum, largest odd integer, number of negative integers, and sum of even integers
+
 import java.util.Scanner;
 
 public class Assignment2 {
     public static void main(String[] args) {
 
-         // variables for all number values required
-    int minNum = 0; 
-    int largeOdd = 0; 
-    int negativeNumCount = 0;
-    int sumOfEvenInt = 0;
+        // variables for all number values required
+        int minNum = 0; 
+        int largeOdd = 0; 
+        int negativeNumCount = 0;
+        int sumOfEvenInt = 0;
 
-    // constants for all messages to print out
-    final String MIN_NUM_STRING = "The minimum integer is ";
-    final String LARGE_ODD_STRING = "The largest odd integer in the sequence is ";
-    final String NEG_NUM_COUNT_STRING = "The count of negative integers in the sequence is ";
-    final String SUM_OF_EVEN_INTS_STRING = "The sum of even integers is ";
+        // constants for all messages to print out
+        final String MIN_NUM_STRING = "The minimum integer is ";
+        final String LARGE_ODD_STRING = "The largest odd integer in the sequence is ";
+        final String NEG_NUM_COUNT_STRING = "The count of negative integers in the sequence is ";
+        final String SUM_OF_EVEN_INTS_STRING = "The sum of even integers is ";
 
         
         Scanner reader = new Scanner(System.in);
@@ -36,6 +43,7 @@ public class Assignment2 {
                 if(nextNumber > largeOdd) {        //see if new odd number can be the largest odd number
                     largeOdd = nextNumber;
                 }
+                
             }
 
             if(nextNumber < 0) { //if number is negative
