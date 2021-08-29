@@ -14,7 +14,7 @@ punlic class Assignment3 {
     - A software engineer practices artificial intelligence research on dead human brains in an attempt to revive them without taking any of the proper procedures of law or science. This is unethical
 
     4. JUDGMENT - Software engineers shall maintain integrity and independence in their professional judgment.
-    - A software engineer refuses to personally develop a project that takes advantage of the local community's personal data 
+    - A software engineer refuses to personally develop a project that takes advantage of the local community's personal data without permission
 
     5. MANAGEMENT - Software engineering managers and leaders shall subscribe to and promote an ethical approach to the management of software development and maintenance.
     - A manager doesnt want to pay extra to maintain some program so he outsources the work to dirt cheap labor that mistreats its workers
