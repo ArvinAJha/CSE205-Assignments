@@ -1,0 +1,36 @@
+Choice		Action
+------		------
+A		Add Course
+D		Display Course
+Q		Quit
+?		Display Help
+
+What action would you like to perform?
+Please enter the Instructor information:
+Enter instructor's first name:	Enter instructor's last name:	Enter instructor's office number:	
+Please enter the Course information:
+Enter course name:	Enter university name:	What action would you like to perform?
+Course name:	Intro to Software Engineering at ASU
+Instructor Information:
+Last Name:	Lovelace
+First Name:	Ada
+Office Number:	999
+What action would you like to perform?
+Please enter the Instructor information:
+Enter instructor's first name:	Enter instructor's last name:	Enter instructor's office number:	
+Please enter the Course information:
+Enter course name:	Enter university name:	What action would you like to perform?
+Choice		Action
+------		------
+A		Add Course
+D		Display Course
+Q		Quit
+?		Display Help
+
+What action would you like to perform?
+Course name:	Operating Systems at NAU
+Instructor Information:
+Last Name:	Whitman
+First Name:	Meg
+Office Number:	1111
+What action would you like to perform?

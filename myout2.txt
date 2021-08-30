@@ -1,0 +1,30 @@
+Choice		Action
+------		------
+A		Add Course
+D		Display Course
+Q		Quit
+?		Display Help
+
+What action would you like to perform?
+Please enter the Instructor information:
+Enter instructor's first name:	Enter instructor's last name:	Enter instructor's office number:	
+Please enter the Course information:
+Enter course name:	Enter university name:	What action would you like to perform?
+Course name:	Data Structures at ASU
+Instructor Information:
+Last Name:	Grace
+First Name:	Hopper
+Office Number:	222
+What action would you like to perform?
+Please enter the Instructor information:
+Enter instructor's first name:	Enter instructor's last name:	Enter instructor's office number:	
+Please enter the Course information:
+Enter course name:	Enter university name:	What action would you like to perform?
+Choice		Action
+------		------
+A		Add Course
+D		Display Course
+Q		Quit
+?		Display Help
+
+What action would you like to perform?
