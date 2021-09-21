@@ -1,6 +1,4 @@
-public class
 //import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 //import javafx.scene.control.Label;
@@ -53,7 +51,4 @@ public class FahrenheitGUI
          fahrenheit.setText("");
       }
    }
-}
- FahrenheitGUI {
-    
 }
