@@ -7,7 +7,12 @@ import java.util.ArrayList;
 
 import javafx.event.ActionEvent; //**Need to import
 import javafx.event.EventHandler; //**Need to import
+import javafx.geometry.Insets;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 /**
 * SelectPane displays a list of available courses from which a user
@@ -17,8 +22,11 @@ public class SelectPane extends BorderPane {
 
     //declare instance varibales
     private ArrayList<Course> courseList;
-
-
+    private final Label selectCoursesPromptLabel = new Label("Select course(s)");
+    private Label totalStudentNumberLabel;
+    private VBox checkboxContainer;
+    private SelectionHandler handler;
+    private ScrollPane scrollPane;
 
     public SelectPane(ArrayList<Course> list) {
         /* ------------------------------ */
@@ -27,21 +35,31 @@ public class SelectPane extends BorderPane {
 
         this.courseList = list;
 
+        //student num label
+        totalStudentNumberLabel = new Label("Total number of students for the selected course(s): 0");
 
-        // Wrap checkboxContainer in ScrollPane so formatting is
-        // correct when many courses are added
+        //handler
+        handler = new SelectionHandler(0);
 
+        //vbox
+        checkboxContainer = new VBox();
 
-
-        // Setup layout
-
-        //create an empty pane where you can add check boxes later
-
+        //scroll (AHHHHHH)
+        scrollPane = new ScrollPane();
+        scrollPane.setContent(checkboxContainer);
+        scrollPane.setPrefSize(checkboxContainer.getMaxHeight(), checkboxContainer.getMaxWidth());
 
         //SelectPane is a BorderPane - add the components here
+        selectCoursesPromptLabel.setPadding(new Insets(10, 10, 10, 10));        //top
+        this.setTop(selectCoursesPromptLabel);
 
+        checkboxContainer.setPadding(new Insets(10, 10, 10, 10));
+        scrollPane.setPadding(new Insets(10, 10, 10, 10));                      //middle
+        this.setCenter(scrollPane);
 
-
+        totalStudentNumberLabel.setPadding(new Insets(10, 10, 10, 10));
+        this.setBottom(totalStudentNumberLabel);                                //bottom
+                
     } // end of SelectPane constructor
 
     // This method uses the newly added parameter Course object
@@ -49,13 +67,16 @@ public class SelectPane extends BorderPane {
     // Such check box needs to be linked to its handler class
     public void updateCourseList(Course newcourse) {
         // Create checkbox for new course with appropriate text
+        CheckBox newBox = new CheckBox(newcourse.toString());
+        newBox.setPadding(new Insets(10, 10, 10, 10));
 
         // Bind checkbox toggle action to event handler
+        newBox.setOnAction(handler);                                   //doesnt seem correct
         // Passes the number of students in each course to the handler. When the checkbox is
-        // toggled, this number will be added/subtracted from the total number of selected students
-
+        // toggled, this number will be added/subtracted from the total number of selected students                         //HOW
 
         // Add new checkbox to checkbox container
+        checkboxContainer.getChildren().add(newBox);
 
     } // end of updateCourseList method
 
@@ -70,7 +91,7 @@ public class SelectPane extends BorderPane {
 
 
         public SelectionHandler(int nums) {
-            this.numStudents = members; // Set instance variable
+            this.numStudents = nums;
         } // end of SelectionHandler constructor
 
         //over-ride the abstract method handle
@@ -80,9 +101,23 @@ public class SelectPane extends BorderPane {
             // can trigger the SelectionHandler event. The cast is necessary to have access
             // to the isSelected() method
 
+            CheckBox source = (CheckBox) event.getSource();
 
             // Update the label with the new number of selected students
+            for(Course aCourse: courseList) {
+                if(aCourse.toString().equalsIgnoreCase(source.getText())) {
+                    if(source.isSelected()) {
+                        numStudents += aCourse.getNumStudents();
+                    } else {
+                        numStudents -= aCourse.getNumStudents();
+                    }
+                }
+            }
+
+            totalStudentNumberLabel.setText("Total number of students for the selected course(s): " + numStudents);
+
 
         } // end handle method
+
     } // end of SelectHandler class
 } // end of SelectPane class
