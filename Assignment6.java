@@ -1,7 +1,15 @@
 
-///  Description: The Assignment6 class creates a Tabbed Pane with
-//               two tabs, one for course Creation and one for
-//               course Selection.
+/**
+ * Assignment #6 
+ * CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: Main Application Class that creates a Tabbed Pane
+ * with two tabs, one for course Creation and one for course Selection
+ * 
+ * 
+ */
 
 import javafx.application.Application;
 import javafx.stage.Stage;

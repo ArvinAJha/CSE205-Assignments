@@ -1,3 +1,12 @@
+/**
+ * Assignment #6 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM
+ * Description: creates instructor with a first name, last name, office number, and the number of courses they teach
+ * 
+ */
 public class Instructor {
 
     // All these variables are private to avoid users from changing them accidentally

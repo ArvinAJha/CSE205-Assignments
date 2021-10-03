@@ -1,7 +1,12 @@
-// Assignment #: 6
-// Arizona State University - CSE205
-//  Description: SelectPane displays a list of available courses
-//  from which a user can select and compute total number of students in multiple courses.
+/**
+ * Assignment #6 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: SelectPane displays a list of available courses
+    from which a user can select and compute total number of students in multiple courses.
+*/
 
 import java.util.ArrayList;
 
@@ -22,7 +27,7 @@ public class SelectPane extends BorderPane {
 
     //declare instance varibales
     private ArrayList<Course> courseList;
-    private final Label selectCoursesPromptLabel = new Label("Select course(s)");
+    private final Label selectCoursesPromptLabel = new Label("Select course(s)"); //constant label
     private Label totalStudentNumberLabel;
     private VBox checkboxContainer;
     private SelectionHandler handler;
@@ -44,7 +49,7 @@ public class SelectPane extends BorderPane {
         //vbox
         checkboxContainer = new VBox();
 
-        //scroll (AHHHHHH)
+        //scroll
         scrollPane = new ScrollPane();
         scrollPane.setContent(checkboxContainer);
         scrollPane.setPrefSize(checkboxContainer.getMaxHeight(), checkboxContainer.getMaxWidth());

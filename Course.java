@@ -1,9 +1,13 @@
-
-// Assignment #: 4
-//  Name:
-//  StudentID:
-//  Lecture:
-// Description:
+/**
+ * Assignment #6 
+ * CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: Course outline for a course with a name, instructor object, university name, 
+ *  and number of students
+ * 
+ */
 
 public class Course {
 

@@ -1,9 +1,12 @@
-// Assignment 6: ASU - CSE 205
-// Name:
-// StudentID:
-//Lecture Date and Time:
-//  Description: GeneratePane creats a pane where a user can enter
-//  course information and create a list of available courses.
+/**
+ * Assignment #6 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: GeneratePane creats a pane where a user can enter
+course information and create a list of available courses.
+*/
 
 /* --------------- */
 /* Import Packages */
