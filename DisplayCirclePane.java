@@ -32,7 +32,7 @@ public class DisplayCirclePane extends GridPane
     private Button btnErase, btnUndo;
     private GridPane ctrlPanel;
     private Color currentCircleColor; 
-    private Double centerX, centerY;
+    private Double centerX, centerY; //needed instance fields to save values of cirles during drawing
 
     //constructor
     public DisplayCirclePane()
@@ -50,10 +50,10 @@ public class DisplayCirclePane extends GridPane
             "GREEN",
             "ORANGE"
         );
-        comboBoxColors.getSelectionModel().selectFirst();
+        comboBoxColors.getSelectionModel().selectFirst(); //set default for UI (does not align with handle method)
 
         //circle color
-        currentCircleColor = Color.BLACK;
+        currentCircleColor = Color.BLACK; //set to align with default (handle method does not activate on initialization so this is necessary)
 
         //combo box handler
         comboBoxColors.setOnAction(new ColorComboBoxHandler());
@@ -76,21 +76,20 @@ public class DisplayCirclePane extends GridPane
         canvas.setOnMousePressed(new PointerHandler());
         canvas.setOnMouseReleased(new PointerHandler());
 
-
         //crtl panel holds buttons and combo box
         ctrlPanel = new GridPane();
 
         // Make the ComboBox of colors to fill the space of the control panel
         GridPane.setHgrow(comboBoxColors, Priority.ALWAYS);
-        // Set the preferred size of the control buttons (1/3 the size of the
-        // initial window)
-
         comboBoxColors.setMaxWidth(Double.MAX_VALUE);
 
+        // Set the preferred size of the control buttons (1/3 the size of the
+        // initial window)
         double btnPrefWidth = Assignment7.WINSIZE_X / 3;
         btnErase.setPrefWidth(btnPrefWidth);
         btnUndo.setPrefWidth(btnPrefWidth);
 
+        //add button and combo to ctrl
         ctrlPanel.add(btnUndo, 0, 0);
         ctrlPanel.add(btnErase, 1, 0);
         ctrlPanel.add(comboBoxColors, 2, 0);
@@ -98,6 +97,8 @@ public class DisplayCirclePane extends GridPane
         // Resize the canvas automatically
         GridPane.setVgrow(canvas, Priority.ALWAYS);
         GridPane.setHgrow(canvas, Priority.ALWAYS);
+
+        //add control panel and canvas to scene
         this.add(ctrlPanel, 0, 0);
         this.add(canvas, 0, 1);
 
@@ -117,30 +118,29 @@ public class DisplayCirclePane extends GridPane
             isPlaceholderOn = false;
         }
 
+        //draws temporary circle while mouse is dragging
         public void drawPlaceHolder(double x, double y, double radius)
         {
             // Change the position of the placeholder
             placeholder = new Circle(x, y, radius);
+            placeholder.setFill(currentCircleColor);
 
             // If this is the first time we draw the placeholder, add it to the canvas
             if (!isPlaceholderOn)
             {
-                placeholder.setFill(currentCircleColor);
                 canvas.getChildren().add(placeholder);
-                isPlaceholderOn = true;
+                isPlaceholderOn = true;             //place holder active
             }
 
             repaint();
         }
 
-        //erase when release
+        //erase place holders when release
         public void erasePlaceHolder()
         {
-            // Simply remove the placeholder Circle from the canvas
-           // write your code here
-           isPlaceholderOn = false;
-           canvas.getChildren().remove(placeholder);
-        //    canvas.getChildren().remove(placeholder);
+            //Simply remove the placeholder Circle from the canvas
+            isPlaceholderOn = false; //deactivate place holder
+            canvas.getChildren().remove(placeholder);
         }
 
         /**
@@ -171,6 +171,7 @@ public class DisplayCirclePane extends GridPane
         private ArrayList<Circle> tempArrayList = new ArrayList<Circle>();
 
         @Override
+        //handle erase and undo button events
         public void handle(ActionEvent e)
         {
             Object source = e.getSource();
@@ -178,7 +179,7 @@ public class DisplayCirclePane extends GridPane
             // Check if source refers to the Erase button
             if (source == btnErase)
             {
-                for(Circle item: circleList) {
+                for(Circle item: circleList) { //make a temporary array in case u need to retrieve it
                     tempArrayList.add(item);
                 }
                 circleList.clear();
@@ -187,12 +188,10 @@ public class DisplayCirclePane extends GridPane
             // Check if source refers to the Undo button
             else if (source == btnUndo)
             {
-                // Erase the last Circle in the list
-                // write your code here
-
+                // Erase the last Circle in the list if there are any circles
                 if(circleList.size() > 0) {
                     circleList.remove(circleList.size()-1);
-                } else {
+                } else {                                    //if no circles, retrieve last array
                     for(Circle item: tempArrayList) {
                         circleList.add(item);
                     }
@@ -213,10 +212,11 @@ public class DisplayCirclePane extends GridPane
     {
 
         @Override
+        //handles color selection in dropdown menu
         public void handle(ActionEvent event)
         {
             //there is some error here, idk why the switch doesnt work
-            String selectedOption = comboBoxColors.getSelectionModel().getSelectedItem();
+            String selectedOption = comboBoxColors.getSelectionModel().getSelectedItem(); //which item was chosen
             // switch(selectedOption) {
                 // case "BLACK": currentCircleColor = Color.BLACK;
                 // case "RED": currentCircleColor = Color.RED;
@@ -224,6 +224,7 @@ public class DisplayCirclePane extends GridPane
                 // case "ORANGE": currentCircleColor = Color.ORANGE;
             // }
 
+            //given chosen item, asign color value
             if(selectedOption.equalsIgnoreCase("BLACK")) {
                 currentCircleColor = Color.BLACK;
             } else if(selectedOption.equalsIgnoreCase("RED")) {
@@ -247,26 +248,27 @@ public class DisplayCirclePane extends GridPane
         private double x1, y1, currentEndX, currentEndY, finalX, finalY;
 
         @Override
+        //handles all mouse events on canvas
         public void handle(MouseEvent event)
         {
 
-            if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {                
-                //when pressed
+            if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {  //press
                 x1 = event.getX(); //center x
                 y1 = event.getY(); //center y
 
+                //store values in instance fields so they are saved for the drag and release methods
                 centerX = x1;
                 centerY = y1;
 
-            } else if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+            } else if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {   //drag
                 currentEndX = event.getX();
                 currentEndY = event.getY();
 
                 double radius = getDistance(centerX, centerY, currentEndX, currentEndY);
 
-                canvas.drawPlaceHolder(centerX, centerY, radius);
+                canvas.drawPlaceHolder(centerX, centerY, radius); //while dragging, draw placeholder            error: doesnot go backwards
 
-            } else if(event.getEventType() == MouseEvent.MOUSE_RELEASED) {
+            } else if(event.getEventType() == MouseEvent.MOUSE_RELEASED) {  //release
                 canvas.erasePlaceHolder();
 
                 finalX = event.getX();
