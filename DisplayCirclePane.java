@@ -32,12 +32,15 @@ public class DisplayCirclePane extends GridPane
     private Button btnErase, btnUndo;
     private GridPane ctrlPanel;
     private Color currentCircleColor; 
+    private Double centerX, centerY;
 
     //constructor
     public DisplayCirclePane()
     {
         // Initialize data models
         circleList = new ArrayList<Circle>();
+        centerX = 0.0;
+        centerY = 0.0;
 
         //combo box
         comboBoxColors = new ComboBox<String>();
@@ -48,6 +51,9 @@ public class DisplayCirclePane extends GridPane
             "ORANGE"
         );
         comboBoxColors.getSelectionModel().selectFirst();
+
+        //circle color
+        currentCircleColor = Color.BLACK;
 
         //combo box handler
         comboBoxColors.setOnAction(new ColorComboBoxHandler());
@@ -67,6 +73,9 @@ public class DisplayCirclePane extends GridPane
 
         //register your canvas to listen to mouse events
         canvas.setOnMouseDragged(new PointerHandler());
+        canvas.setOnMousePressed(new PointerHandler());
+        canvas.setOnMouseReleased(new PointerHandler());
+
 
         //crtl panel holds buttons and combo box
         ctrlPanel = new GridPane();
@@ -105,25 +114,33 @@ public class DisplayCirclePane extends GridPane
         public CanvasPane()
         {
             //implement the constrctor
+            isPlaceholderOn = false;
         }
 
-        public void drawPlaceHolder(int x, int y, int radius)
+        public void drawPlaceHolder(double x, double y, double radius)
         {
             // Change the position of the placeholder
-            //write your code here
+            placeholder = new Circle(x, y, radius);
 
             // If this is the first time we draw the placeholder, add it to the canvas
             if (!isPlaceholderOn)
             {
-                //write your code here
+                placeholder.setFill(currentCircleColor);
+                canvas.getChildren().add(placeholder);
+                isPlaceholderOn = true;
             }
 
+            repaint();
         }
 
+        //erase when release
         public void erasePlaceHolder()
         {
             // Simply remove the placeholder Circle from the canvas
            // write your code here
+           isPlaceholderOn = false;
+           canvas.getChildren().remove(placeholder);
+        //    canvas.getChildren().remove(placeholder);
         }
 
         /**
@@ -151,16 +168,19 @@ public class DisplayCirclePane extends GridPane
     private class ButtonHandler implements EventHandler<ActionEvent>
     {
 
+        private ArrayList<Circle> tempArrayList = new ArrayList<Circle>();
+
         @Override
         public void handle(ActionEvent e)
         {
             Object source = e.getSource();
-            ArrayList<Circle> tempArrayList = new ArrayList<Circle>();
 
             // Check if source refers to the Erase button
             if (source == btnErase)
             {
-                tempArrayList = (ArrayList) circleList.clone();
+                for(Circle item: circleList) {
+                    tempArrayList.add(item);
+                }
                 circleList.clear();
                 canvas.repaint();
             }
@@ -173,7 +193,9 @@ public class DisplayCirclePane extends GridPane
                 if(circleList.size() > 0) {
                     circleList.remove(circleList.size()-1);
                 } else {
-                    circleList = (ArrayList<Circle>) tempArrayList.clone();
+                    for(Circle item: tempArrayList) {
+                        circleList.add(item);
+                    }
                 }
 
                 // Repaint the Canvas
@@ -191,10 +213,27 @@ public class DisplayCirclePane extends GridPane
     {
 
         @Override
-        public void handle(ActionEvent e)
+        public void handle(ActionEvent event)
         {
+            //there is some error here, idk why the switch doesnt work
             String selectedOption = comboBoxColors.getSelectionModel().getSelectedItem();
-            System.out.println(selectedOption);
+            // switch(selectedOption) {
+                // case "BLACK": currentCircleColor = Color.BLACK;
+                // case "RED": currentCircleColor = Color.RED;
+                // case "GREEN": currentCircleColor = Color.GREEN;
+                // case "ORANGE": currentCircleColor = Color.ORANGE;
+            // }
+
+            if(selectedOption.equalsIgnoreCase("BLACK")) {
+                currentCircleColor = Color.BLACK;
+            } else if(selectedOption.equalsIgnoreCase("RED")) {
+                currentCircleColor = Color.RED;
+            } else if(selectedOption.equalsIgnoreCase("GREEN")) {
+                currentCircleColor = Color.GREEN;
+            } else if(selectedOption.equalsIgnoreCase("ORANGE")) {
+                currentCircleColor = Color.ORANGE;
+            }
+
         }
 
     }
@@ -205,26 +244,48 @@ public class DisplayCirclePane extends GridPane
     private class PointerHandler implements EventHandler<MouseEvent>
     {
         // 1=pressed, 2=dragged, 3=released
-        private int x1, y1, x2, y2, x3, y3;
+        private double x1, y1, currentEndX, currentEndY, finalX, finalY;
 
         @Override
-        public void handle(MouseEvent e)
+        public void handle(MouseEvent event)
         {
-            //write your code here
 
+            if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {                
+                //when pressed
+                x1 = event.getX(); //center x
+                y1 = event.getY(); //center y
 
+                centerX = x1;
+                centerY = y1;
 
+            } else if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
+                currentEndX = event.getX();
+                currentEndY = event.getY();
 
+                double radius = getDistance(centerX, centerY, currentEndX, currentEndY);
 
+                canvas.drawPlaceHolder(centerX, centerY, radius);
 
+            } else if(event.getEventType() == MouseEvent.MOUSE_RELEASED) {
+                canvas.erasePlaceHolder();
 
+                finalX = event.getX();
+                finalY = event.getY();
+                double radius = getDistance(centerX, centerY, finalX, finalY);
+
+                Circle finalCircle = new Circle(centerX, centerY, radius);
+                finalCircle.setFill(currentCircleColor);
+
+                circleList.add(finalCircle);
+                canvas.repaint();
+            }
 
         }
 
         /**
-         * A helper method in case you need it. Get the Euclidean distance between (x1,y1) and (x2,y2)
+         * A helper method in case you need it. Get the Euclidean distance between (centerX,centerY) and (x2,y2)
          */
-        private double getDistance(int x1, int y1, int x2, int y2)
+        private double getDistance(double x1, double y1, double x2, double y2)
         {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         }
