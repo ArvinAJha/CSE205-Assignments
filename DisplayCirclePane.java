@@ -1,11 +1,12 @@
 /**
- * Assignment #7
- *
- * Name:
- * Student ID:
- * Lecture:
- * Description:
- *
+ * Assignment #7 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: Displays the control panel for undoing actions and erase the canvas
+ *  which is used to draw circles of varying sizes and colors when dragged. 
+ * 
  */
 
 import java.util.ArrayList;
@@ -168,7 +169,7 @@ public class DisplayCirclePane extends GridPane
     private class ButtonHandler implements EventHandler<ActionEvent>
     {
 
-        private ArrayList<Circle> tempArrayList = new ArrayList<Circle>();
+        private ArrayList<Circle> tempArrayList = new ArrayList<Circle>(); //temp array to hold values in case list of circles must be retrieved
 
         @Override
         //handle erase and undo button events
@@ -215,14 +216,7 @@ public class DisplayCirclePane extends GridPane
         //handles color selection in dropdown menu
         public void handle(ActionEvent event)
         {
-            //there is some error here, idk why the switch doesnt work
             String selectedOption = comboBoxColors.getSelectionModel().getSelectedItem(); //which item was chosen
-            // switch(selectedOption) {
-                // case "BLACK": currentCircleColor = Color.BLACK;
-                // case "RED": currentCircleColor = Color.RED;
-                // case "GREEN": currentCircleColor = Color.GREEN;
-                // case "ORANGE": currentCircleColor = Color.ORANGE;
-            // }
 
             //given chosen item, asign color value
             if(selectedOption.equalsIgnoreCase("BLACK")) {

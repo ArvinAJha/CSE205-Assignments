@@ -1,11 +1,13 @@
 
 /**
  * Assignment #7 
- * 
- * Name: 
- * Student ID: 
- * Lecture: 
- * Description:
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: Main Application Class that creates the Stage, 
+ * sets size and title of window and launches program. 
+ * It will add on the DisplayCirclePane 
  * 
  */
 
