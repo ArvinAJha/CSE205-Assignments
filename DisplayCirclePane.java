@@ -30,6 +30,8 @@ public class DisplayCirclePane extends GridPane
     private CanvasPane canvas; // where to draw Circles
     private ComboBox<String> comboBoxColors;
     private Button btnErase, btnUndo;
+    private GridPane ctrlPanel;
+    private Color currentCircleColor; 
 
     //constructor
     public DisplayCirclePane()
@@ -45,6 +47,7 @@ public class DisplayCirclePane extends GridPane
             "GREEN",
             "ORANGE"
         );
+        comboBoxColors.getSelectionModel().selectFirst();
 
         //combo box handler
         comboBoxColors.setOnAction(new ColorComboBoxHandler());
@@ -62,25 +65,33 @@ public class DisplayCirclePane extends GridPane
         canvas = new CanvasPane();
         canvas.setStyle("-fx-background-color: white;");
 
-        //step 3- register your canvas to listen to mouse events
+        //register your canvas to listen to mouse events
         canvas.setOnMouseDragged(new PointerHandler());
 
-        // Resize the canvas automatically
-        GridPane.setVgrow(canvas, Priority.ALWAYS);
-        GridPane.setHgrow(canvas, Priority.ALWAYS);
+        //crtl panel holds buttons and combo box
+        ctrlPanel = new GridPane();
+
         // Make the ComboBox of colors to fill the space of the control panel
         GridPane.setHgrow(comboBoxColors, Priority.ALWAYS);
         // Set the preferred size of the control buttons (1/3 the size of the
         // initial window)
 
-        // Optional adjustments to the layout
         comboBoxColors.setMaxWidth(Double.MAX_VALUE);
 
         double btnPrefWidth = Assignment7.WINSIZE_X / 3;
         btnErase.setPrefWidth(btnPrefWidth);
         btnUndo.setPrefWidth(btnPrefWidth);
 
-        this.getChildren().add(btnUndo);
+        ctrlPanel.add(btnUndo, 0, 0);
+        ctrlPanel.add(btnErase, 1, 0);
+        ctrlPanel.add(comboBoxColors, 2, 0);
+
+        // Resize the canvas automatically
+        GridPane.setVgrow(canvas, Priority.ALWAYS);
+        GridPane.setHgrow(canvas, Priority.ALWAYS);
+        this.add(ctrlPanel, 0, 0);
+        this.add(canvas, 0, 1);
+
     }
 
     /**
@@ -144,11 +155,14 @@ public class DisplayCirclePane extends GridPane
         public void handle(ActionEvent e)
         {
             Object source = e.getSource();
+            ArrayList<Circle> tempArrayList = new ArrayList<Circle>();
 
             // Check if source refers to the Erase button
             if (source == btnErase)
             {
-                //write your code here
+                tempArrayList = (ArrayList) circleList.clone();
+                circleList.clear();
+                canvas.repaint();
             }
             // Check if source refers to the Undo button
             else if (source == btnUndo)
@@ -156,9 +170,11 @@ public class DisplayCirclePane extends GridPane
                 // Erase the last Circle in the list
                 // write your code here
 
-
-
-
+                if(circleList.size() > 0) {
+                    circleList.remove(circleList.size()-1);
+                } else {
+                    circleList = (ArrayList<Circle>) tempArrayList.clone();
+                }
 
                 // Repaint the Canvas
                 canvas.repaint();
@@ -177,7 +193,8 @@ public class DisplayCirclePane extends GridPane
         @Override
         public void handle(ActionEvent e)
         {
-            System.out.println(e.getSource().getClass());
+            String selectedOption = comboBoxColors.getSelectionModel().getSelectedItem();
+            System.out.println(selectedOption);
         }
 
     }
