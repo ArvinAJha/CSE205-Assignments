@@ -123,16 +123,19 @@ public class DisplayCirclePane extends GridPane
         public void drawPlaceHolder(double x, double y, double radius)
         {
             // Change the position of the placeholder
-            placeholder = new Circle(x, y, radius);
-            placeholder.setFill(currentCircleColor);
-
             // If this is the first time we draw the placeholder, add it to the canvas
             if (!isPlaceholderOn)
             {
-                canvas.getChildren().add(placeholder);
+                placeholder = new Circle(x, y, radius);
+                placeholder.setFill(Color.TRANSPARENT);
+                placeholder.setStrokeWidth(0.5);
+                placeholder.setStroke(currentCircleColor);
+                circleList.add(placeholder);
+                // canvas.getChildren().add(placeholder);
                 isPlaceholderOn = true;             //place holder active
             }
 
+            placeholder.setRadius(radius);
             repaint();
         }
 
@@ -141,7 +144,9 @@ public class DisplayCirclePane extends GridPane
         {
             //Simply remove the placeholder Circle from the canvas
             isPlaceholderOn = false; //deactivate place holder
-            canvas.getChildren().remove(placeholder);
+            // canvas.getChildren().remove(placeholder);
+            circleList.remove(placeholder);
+            repaint();
         }
 
         /**
