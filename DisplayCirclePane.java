@@ -33,15 +33,12 @@ public class DisplayCirclePane extends GridPane
     private Button btnErase, btnUndo;
     private GridPane ctrlPanel;
     private Color currentCircleColor; 
-    private Double centerX, centerY; //needed instance fields to save values of cirles during drawing
 
     //constructor
     public DisplayCirclePane()
     {
         // Initialize data models
         circleList = new ArrayList<Circle>();
-        centerX = 0.0;
-        centerY = 0.0;
 
         //combo box
         comboBoxColors = new ComboBox<String>();
@@ -49,7 +46,8 @@ public class DisplayCirclePane extends GridPane
             "BLACK",
             "RED",
             "GREEN",
-            "ORANGE"
+            "ORANGE",
+            "BLUE"
         );
         comboBoxColors.getSelectionModel().selectFirst(); //set default for UI (does not align with handle method)
 
@@ -73,9 +71,10 @@ public class DisplayCirclePane extends GridPane
         canvas.setStyle("-fx-background-color: white;");
 
         //register your canvas to listen to mouse events
-        canvas.setOnMouseDragged(new PointerHandler());
-        canvas.setOnMousePressed(new PointerHandler());
-        canvas.setOnMouseReleased(new PointerHandler());
+        PointerHandler pointHandler = new PointerHandler();
+        canvas.setOnMouseDragged(pointHandler);
+        canvas.setOnMousePressed(pointHandler);
+        canvas.setOnMouseReleased(pointHandler);
 
         //crtl panel holds buttons and combo box
         ctrlPanel = new GridPane();
@@ -228,6 +227,8 @@ public class DisplayCirclePane extends GridPane
                 currentCircleColor = Color.BLACK;
             } else if(selectedOption.equalsIgnoreCase("RED")) {
                 currentCircleColor = Color.RED;
+            } else if(selectedOption.equalsIgnoreCase("BLUE")) {
+                currentCircleColor = Color.BLUE;
             } else if(selectedOption.equalsIgnoreCase("GREEN")) {
                 currentCircleColor = Color.GREEN;
             } else if(selectedOption.equalsIgnoreCase("ORANGE")) {
@@ -244,7 +245,7 @@ public class DisplayCirclePane extends GridPane
     private class PointerHandler implements EventHandler<MouseEvent>
     {
         // 1=pressed, 2=dragged, 3=released
-        private double x1, y1, currentEndX, currentEndY, finalX, finalY;
+        private double centerX, centerY, currentEndX, currentEndY, finalX, finalY;
 
         @Override
         //handles all mouse events on canvas
@@ -252,12 +253,10 @@ public class DisplayCirclePane extends GridPane
         {
 
             if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {  //press
-                x1 = event.getX(); //center x
-                y1 = event.getY(); //center y
+                centerX = event.getX(); //center x
+                centerY = event.getY(); //center y
 
                 //store values in instance fields so they are saved for the drag and release methods
-                centerX = x1;
-                centerY = y1;
 
             } else if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {   //drag
                 currentEndX = event.getX();
