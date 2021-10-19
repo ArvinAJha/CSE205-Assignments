@@ -16,7 +16,7 @@
             "name": "Launch Assignment7",
             "request": "launch",
             "vmArgs": "--module-path /Users/arvinjha/Downloads/javafx-sdk-17.0.0.1/lib/ --add-modules javafx.controls,javafx.fxml",
-            "mainClass": "Assignment7",
+            "mainClass": "Assignment8",
             "projectName": "cse205-assignments_22c7f00f"
         }
     ]
