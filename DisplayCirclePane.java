@@ -85,7 +85,7 @@ public class DisplayCirclePane extends GridPane
 
         // Set the preferred size of the control buttons (1/3 the size of the
         // initial window)
-        double btnPrefWidth = Assignment7.WINSIZE_X / 3;
+        double btnPrefWidth = Constants.WINSIZE_X / 3;
         btnErase.setPrefWidth(btnPrefWidth);
         btnUndo.setPrefWidth(btnPrefWidth);
 
