@@ -18,11 +18,40 @@ import javafx.stage.Stage;
 public class AssignmentHonors extends Application
 {
     @Override
-    public void start(Stage stage) throws Exception
-    {
+    public void start(Stage stage) throws Exception {
         DisplayCirclePane rootPane = new DisplayCirclePane();
         rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
         Scene scene = new Scene(rootPane, Constants.WINSIZE_X, Constants.WINSIZE_Y);
+
+        StackPane root = new StackPane();
+
+        // courseList to be used in both generatePane & selectPane
+        courseList = new ArrayList<Course>();
+
+        selectPane = new SelectPane(courseList);
+        createPane = new GeneratePane(courseList, selectPane);
+
+        tabPane = new TabPane();
+
+        Tab tab1 = new Tab();
+        tab1.setText("Add Course");
+        tab1.setContent(createPane);
+
+        Tab tab2 = new Tab();
+        tab2.setText("Select Course");
+        tab2.setContent(selectPane);
+
+        tabPane.getSelectionModel().select(0);
+        tabPane.getTabs().addAll(tab1, tab2);
+
+        root.getChildren().add(tabPane);
+
+        Scene scene = new Scene(root, 900, 400);
+        stage.setTitle("Course Selection App");
+        stage.setScene(scene);
+        stage.show();
+
+
         stage.setTitle(Constants.WINTITLE);
         stage.setScene(scene);
         stage.show();
@@ -34,8 +63,7 @@ public class AssignmentHonors extends Application
      * 
      * @param args
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 }
