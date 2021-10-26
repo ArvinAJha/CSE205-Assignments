@@ -20,18 +20,20 @@ import javafx.stage.Stage;
 
 public class AssignmentHonors extends Application
 {
+    private TabPane tabPane;
+    private GeneralPane generalPane;
+    private AnxietyPane anxietyPane;
+    private CoursePane coursePane;
+
     @Override
     public void start(Stage stage) throws Exception {
 
         StackPane rootPane = new StackPane();
-
-        // rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
-        Scene scene = new Scene(rootPane, Constants.WINSIZE_X, Constants.WINSIZE_Y);
-
-        TabPane tabPane = new TabPane();
-        GeneralPane generalPane = new GeneralPane();
-        AnxietyPane anxietyPane = new AnxietyPane();
-        CoursePane coursePane = new CoursePane();
+        
+        tabPane = new TabPane();
+        generalPane = new GeneralPane();
+        anxietyPane = new AnxietyPane();
+        coursePane = new CoursePane();
 
         Tab tab1 = new Tab();
         tab1.setText("General Grades");
@@ -49,6 +51,9 @@ public class AssignmentHonors extends Application
         tabPane.getTabs().addAll(tab1, tab2);
 
         rootPane.getChildren().add(tabPane);
+
+        rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
+        Scene scene = new Scene(rootPane, Constants.WINSIZE_X, Constants.WINSIZE_Y);
 
         stage.setTitle(Constants.WINTITLE);
         stage.setScene(scene);
