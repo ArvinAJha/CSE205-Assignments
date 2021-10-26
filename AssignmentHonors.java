@@ -1,16 +1,3 @@
-
-/**
- * Assignment #7 
- * ASU - CSE205
- * Name: Arvin Jha
- * Student ID: 1221497264
- * Lecture: 10:10AM - 11:00AM M W F
- * Description: Main Application Class that creates the Stage, 
- * sets size and title of window and launches program. 
- * It will add on the DisplayCirclePane 
- * 
- */
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -48,11 +35,10 @@ public class AssignmentHonors extends Application
         tab3.setContent(coursePane);
 
         tabPane.getSelectionModel().select(0);
-        tabPane.getTabs().addAll(tab1, tab2);
+        tabPane.getTabs().addAll(tab1, tab2, tab3);
 
         rootPane.getChildren().add(tabPane);
 
-        rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
         Scene scene = new Scene(rootPane, Constants.WINSIZE_X, Constants.WINSIZE_Y);
 
         stage.setTitle(Constants.WINTITLE);
