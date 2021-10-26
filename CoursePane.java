@@ -1,5 +1,7 @@
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-public class CoursePane extends Pane{
-    
+public class CoursePane extends VBox{
+    public CoursePane() {
+        
+    }
 }

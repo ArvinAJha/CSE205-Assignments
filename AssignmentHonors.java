@@ -25,7 +25,7 @@ public class AssignmentHonors extends Application
 
         StackPane rootPane = new StackPane();
 
-        rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
+        // rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
         Scene scene = new Scene(rootPane, Constants.WINSIZE_X, Constants.WINSIZE_Y);
 
         TabPane tabPane = new TabPane();
