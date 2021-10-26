@@ -13,44 +13,42 @@
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class AssignmentHonors extends Application
 {
     @Override
     public void start(Stage stage) throws Exception {
-        DisplayCirclePane rootPane = new DisplayCirclePane();
+
+        StackPane rootPane = new StackPane();
+
         rootPane.setPrefSize(Constants.WINSIZE_X, Constants.WINSIZE_Y);
         Scene scene = new Scene(rootPane, Constants.WINSIZE_X, Constants.WINSIZE_Y);
 
-        StackPane root = new StackPane();
-
-        // courseList to be used in both generatePane & selectPane
-        courseList = new ArrayList<Course>();
-
-        selectPane = new SelectPane(courseList);
-        createPane = new GeneratePane(courseList, selectPane);
-
-        tabPane = new TabPane();
+        TabPane tabPane = new TabPane();
+        GeneralPane generalPane = new GeneralPane();
+        AnxietyPane anxietyPane = new AnxietyPane();
+        CoursePane coursePane = new CoursePane();
 
         Tab tab1 = new Tab();
-        tab1.setText("Add Course");
-        tab1.setContent(createPane);
+        tab1.setText("General Grades");
+        tab1.setContent(generalPane);
 
         Tab tab2 = new Tab();
-        tab2.setText("Select Course");
-        tab2.setContent(selectPane);
+        tab2.setText("Anxiety");
+        tab2.setContent(anxietyPane);
+
+        Tab tab3 = new Tab();
+        tab3.setText("Add/Remove Course");
+        tab3.setContent(coursePane);
 
         tabPane.getSelectionModel().select(0);
         tabPane.getTabs().addAll(tab1, tab2);
 
-        root.getChildren().add(tabPane);
-
-        Scene scene = new Scene(root, 900, 400);
-        stage.setTitle("Course Selection App");
-        stage.setScene(scene);
-        stage.show();
-
+        rootPane.getChildren().add(tabPane);
 
         stage.setTitle(Constants.WINTITLE);
         stage.setScene(scene);
