@@ -32,7 +32,7 @@ import javafx.scene.paint.Color;
  * GeneratePane builds a pane where a user can enter a course
  * information and create a list of available courses.
  */
-public class GeneratePane extends HBox {
+public class CoursePane extends HBox {
     /* ------------------ */
     /* Instance variables */
     /* ------------------ */
@@ -50,7 +50,7 @@ public class GeneratePane extends HBox {
      * @param list   the list of courses
      * @param sePane the SelectPane instance
      */
-    public GeneratePane(ArrayList<Course> list, SelectPane sePane) {
+    public CoursePane(ArrayList<Course> list, SelectPane sePane) {
         /* ------------------------------ */
         /* Instantiate instance variables */
         /* ------------------------------ */

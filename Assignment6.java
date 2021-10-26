@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class Assignment6 extends Application {
     private TabPane tabPane;
-    private GeneratePane createPane;
+    private CoursePane coursePane;
     private SelectPane selectPane;
     private ArrayList<Course> courseList;
 
@@ -32,17 +32,21 @@ public class Assignment6 extends Application {
         courseList = new ArrayList<Course>();
 
         selectPane = new SelectPane(courseList);
-        createPane = new GeneratePane(courseList, selectPane);
+        coursePane = new CoursePane(courseList, selectPane);
 
         tabPane = new TabPane();
 
         Tab tab1 = new Tab();
         tab1.setText("Add Course");
-        tab1.setContent(createPane);
+        tab1.setContent(coursePane);
 
         Tab tab2 = new Tab();
         tab2.setText("Select Course");
         tab2.setContent(selectPane);
+
+        Tab tab3 = new Tab();
+        tab3.setText("Add/RemoveCourse");
+        tab3.setContent(coursePane);
 
         tabPane.getSelectionModel().select(0);
         tabPane.getTabs().addAll(tab1, tab2);
