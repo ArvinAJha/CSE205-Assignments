@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 
 public class Assignment8
 {
@@ -76,19 +77,16 @@ public class Assignment8
 ***  Complete the code by calling the addCourse method, and if the course is added successfully, show
 "Course added\n" on screen, otherwise show "Course NOT added\n"
 ***********************************************************************************/
-                   
+                    if(courseManager.addCourse(courseName, courseUniversity, instrFirstName, instrLastName, instrOfficeNum)) {
+                        System.out.print("Course added\n");
+                    } else {
+                        System.out.print("Course NOT added\n");
+                    }
 
                     break;
 
                 case 'C': // Create a new CourseManagement
                     courseManager = new CourseManagement();
-
-                    try {
-                        courseManager.addCourse(courseName, courseUniversity, instrFirstName, instrLastName, instrOfficeNum);
-                        System.out.print("Course Added\n");
-                    } catch (Exception e) {
-                        System.out.print("Course NOT Added\n");
-                    }
 
                     break;
 
@@ -103,9 +101,9 @@ show course found, otherwise is not found
 ***********************************************************************************/
                     int courseIndex = courseManager.courseExists(courseName, courseUniversity);
                     if(courseIndex > -1) {
-                        System.out.println(courseManager.courseList.get(courseIndex).toString());
+                        System.out.println(courseName + " at " + courseUniversity + " is found");
                     } else {
-                        System.out.println("Course NOT found");
+                        System.out.println(courseName + " at " + courseUniversity + " is NOT found");
                     }
                     break;
 
@@ -123,7 +121,9 @@ and office number, otehrwise print not found
 ***********************************************************************************/
                     int instrIndex = courseManager.instructorExists(instrFirstName, instrLastName, instrOfficeNum);
                     if(instrIndex > -1) {
-                        
+                        System.out.println("Instructor: " + instrFirstName + " " + instrLastName + ", " + instrOfficeNum + " is found");
+                    } else {
+                        System.out.println("Instructor: " + instrFirstName + " " + instrLastName + ", " + instrOfficeNum + " is NOT found");
                     }
                  
                     break;
@@ -136,7 +136,7 @@ and office number, otehrwise print not found
 /************************************************************************************
 ***  Complete the follwing code. Sort by course names in alphabetical order
 ***********************************************************************************/
-                 
+                    courseManager.sortByCourseName();
                     System.out.print("sorted by course names\n");
                     break;
 
@@ -157,7 +157,12 @@ and office number, otehrwise print not found
 ***  Complete the code, if the course with above name and university is found
 remove it. Show the relevant info. accordingly.
 ***********************************************************************************/
-                   
+                    if(courseManager.courseExists(courseName, courseUniversity) > 0) {
+                        courseManager.removeCourse(courseName, courseUniversity);
+                        System.out.print(courseName + " at " + courseUniversity + " is removed\n");
+                    } else {
+                        System.out.print(courseName + " at " + courseUniversity + " is NOT removed\n");
+                    }
                     break;
 
                 case 'T': // Close CourseManagement
@@ -175,14 +180,20 @@ remove it. Show the relevant info. accordingly.
 ***********************************************************************************/
                     try
                     {
+                        FileWriter writer = new FileWriter(outFilename);
+                        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                        PrintWriter printWriter = new PrintWriter(bufferedWriter);
                         
+                        printWriter.print(outMsg + "\n");
+                        System.out.print(outFilename + " is written\n");
 
-
-
+                        printWriter.close();
+                        bufferedWriter.close();
+                        writer.close();
                     }
                     catch (IOException e)
                     {
-                        
+                        System.out.print("Write string inside the file error\n");
 
                     }
                     break;
@@ -195,6 +206,15 @@ remove it. Show the relevant info. accordingly.
 ***********************************************************************************/
                     try
                     {
+                        FileReader reader = new FileReader(inFilename);
+                        BufferedReader bufferedReader = new BufferedReader(reader);
+
+                        System.out.print(inFilename + " was read\n");
+                        System.out.print("The first line of the file is:\n");
+                        String line = bufferedReader.readLine();
+                        System.out.print(line + "\n");
+
+                        bufferedReader.close();
 
                     }
                     catch (FileNotFoundException e)
@@ -215,10 +235,14 @@ remove it. Show the relevant info. accordingly.
 ***********************************************************************************/
                     try
                     {
-                        
+                        FileOutputStream fileOutput = new FileOutputStream(outFilename);
+                        ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+
+                        objectOutput.writeObject(courseManager);                                            //am i not supposed to write course manager???
 
 
-
+                        objectOutput.close();
+                        fileOutput.close();
                     }
                     catch (NotSerializableException e)
                     {
@@ -240,18 +264,26 @@ as courseManager
 ***********************************************************************************/
                     try
                     {
-                        
+                        FileInputStream fileInput = new FileInputStream(inFilename);
+                        ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+
+                        courseManager = (CourseManagement) objectInput.readObject();
+
+                        objectInput.close();
+                        fileInput.close();
+
+                        System.out.print(inFilename + " was read\n");
                     }
-                    catch (/*------------------*/)
+                    catch (ClassNotFoundException e)
                     {
                         System.out.print("Class not found exception\n");
                     }
 
-                    catch (/*-----------------*/)
+                    catch (NotSerializableException e)
                     {
                         System.out.print("Not serializable exception\n");
                     }
-                    catch (/*------------------*/)
+                    catch (IOException e)
                     {
                         System.out.print("Data file read exception\n");
                     }

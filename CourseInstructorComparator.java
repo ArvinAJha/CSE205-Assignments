@@ -12,6 +12,14 @@ public class CourseInstructorComparator implements Comparator<Course>
     //instructor's last and first names
     public int compare(Course first, Course second)
     {
-       
+       int comp = first.getInstructor().getLastName().compareTo(second.getInstructor().getLastName());
+
+        if(comp == 0) {
+            comp = first.getInstructor().getFirstName().compareTo(second.getInstructor().getFirstName());
+            return comp;
+        }
+
+        return comp;
+
     }
 }

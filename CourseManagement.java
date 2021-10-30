@@ -6,11 +6,14 @@
 
 
 //import all necessary classes
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CourseManagement
+public class CourseManagement implements Serializable
 {
     ArrayList<Course> courseList;
+
+
 
     /**
      * Create and instantiate the courseList
@@ -18,7 +21,7 @@ public class CourseManagement
     public CourseManagement()
     {
         //write code here
-
+        courseList = new ArrayList<Course>();
 
     }
 
@@ -35,9 +38,14 @@ public class CourseManagement
     {
         //write code here
 
+        for(int index = 0; index < courseList.size(); index++) {
+            
+            if(courseName.equals(courseList.get(index).getCourseName()) && universityName.equals(courseList.get(index).getUniversity())) {
+                return index;
+            }
+        }
 
-
-
+        return -1; //not found
 
     }
 
@@ -52,12 +60,15 @@ public class CourseManagement
      */
     public int instructorExists(String firstName, String lastName, String officeNum)
     {   //write the code here
-       
 
+        for(int index = 0; index < courseList.size(); index++) {
+            
+            if(lastName.equals(courseList.get(index).getInstructor().getLastName()) && firstName.equalsIgnoreCase(courseList.get(index).getInstructor().getFirstName()) && officeNum.equalsIgnoreCase(courseList.get(index).getInstructor().getOfficeNum())) {
+                return index;
+            }
+        }
 
-
-
-
+        return -1;
 
     }
 
@@ -98,9 +109,12 @@ public class CourseManagement
     public boolean removeCourse(String courseName, String university)
     {
         //write your code here
+        if(courseExists(courseName, university) > -1) {
+            courseList.remove(courseExists(courseName, university));
+            return true;
+        }
 
-
-
+        return false;
     }
 
     /**
@@ -111,7 +125,7 @@ public class CourseManagement
     public void sortByCourseName()
     {
         //write your code here
-
+        Sorts.sort(courseList, new CourseNameComparator());
 
     }
 
@@ -123,7 +137,7 @@ public class CourseManagement
      */
     public void sortByCourseInstructor()
     {
-        courseList.sort(new CourseInstructorComparator());
+        Sorts.sort(courseList, new CourseInstructorComparator());
     }
 
     /**
@@ -134,9 +148,16 @@ public class CourseManagement
     public String listCourses()
     {
         //write your code here
+        String result = "";
+        try {
+            for(int index = 0; index < courseList.size(); index++) {
+                result = result + courseList.get(index).toString();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.print("\nNo Courses Found\n");
+        }
 
-
-
+        return result; 
     }
 
     /**
@@ -145,6 +166,7 @@ public class CourseManagement
     public void closeCourseManagement()
     {
        //write your code here
+       courseList.clear();
 
     }
 
