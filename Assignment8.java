@@ -1,11 +1,15 @@
-// Assignment: ASU CSE205 
-// Name:
-// StudentID:
-// Lecture:
-// Description: The Assignment 8 class displays a menu of choices to a user
-//               and performs the chosen task. It will keep asking a user to
-//               enter the next choice until the choice of 'Q' (Quit) is
-//               entered. //---- is where you should add your own code
+
+/**
+ * Assignment #7 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: The Assignment 8 class displays a menu of choices to a user
+ *               and performs the chosen task. It will keep asking a user to
+ *              enter the next choice until the choice of 'Q' (Quit) is
+ *              entered. //---- is where you should add your own code
+ */
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,9 +1,13 @@
-// Assignment:
-// Name:
-// StudentID:
-// Lecture:
-// Description:
 
+/**
+ * Assignment #7 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: The CourseManagement class has a list of Course objects and instructors and manages what objects 
+ * exists in the list, sorts the objects, and searchs for specifc courses
+*/
 
 //import all necessary classes
 import java.io.Serializable;

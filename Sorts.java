@@ -1,8 +1,12 @@
-// Assignment:
-// Name:
-// StudentID:
-// Lecture:
-// Description:
+/**
+ * Assignment #7 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: The Sorts class uses a selection sort to sort a list of courses with either the name comparator or the instructor
+ *              comparator given the parameter
+*/
 
 import java.util.Comparator;
 import java.util.ArrayList;

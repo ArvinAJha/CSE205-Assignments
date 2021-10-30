@@ -1,8 +1,11 @@
-// Assignment: ASU CSE205 - assignment 8
-// Name:
-// StudentID:
-// Lecture:
-// Description: Thsi class represenst an object of type instructor. An instructor has a  first name, last name and office number
+/**
+ * Assignment #7 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: This class represenst an object of type instructor. An instructor has a  first name, last name and office number
+*/
 
 import java.io.Serializable;
 

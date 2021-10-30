@@ -1,10 +1,14 @@
 import java.io.Serializable;
 
-// Assignment:
-// Name:
-// StudentID:
-// Lecture:
-// Description:
+/**
+ * Assignment #7 
+ * ASU - CSE205
+ * Name: Arvin Jha
+ * Student ID: 1221497264
+ * Lecture: 10:10AM - 11:00AM M W F
+ * Description: The Course class creates a singular Course with a name, instructor, and university of the course 
+ *              used to store the details of the course a user enrolls in
+*/
 
 
 
