@@ -1,8 +1,8 @@
 // Assignment #: 9
-//         Name: To be completed
-//    StudentID: To be completed
-//      Lecture: To be completed
-//  Description: this program reads in a sequence of numbers from standard
+//         Name: Arvin Jha
+//    StudentID: 1221497264
+//      Lecture: 10:10AM - 11:00AM M W F
+//  Description: This program reads in a sequence of numbers from standard
 //               input until 0 is read, stores the numbers in an array,
 //               then finds the minimum number,
 //               the sum of numbers at odd indexes,
@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 
 public class Assignment9
 {
+    //the main method listens for input using a Buffered reader and calls methods to compute required values
     public static void main(String[] args)
     {
 
@@ -33,15 +34,13 @@ public class Assignment9
             BufferedReader bufferedReader = new BufferedReader(streamReader);
 
             // while or do-While loop to store all integers in the array until 0
-            line = bufferedReader.readLine();
-            i++;
+            line = bufferedReader.readLine();               //get initial line
+            i++;                                            //running index
             while(!line.equals("0")) {
-                // read in the number as a string and parse to an integer and assign
-                // it to array element
 
-                numbers[i] = Double.parseDouble(line);
-                line = bufferedReader.readLine();
-                i++;
+                numbers[i] = Double.parseDouble(line);      //add new line from previous loop iteration
+                line = bufferedReader.readLine();           //read line
+                i++;                                        //increase index
                 
             } // Continue iterating until 0 is entered
 
@@ -53,15 +52,16 @@ public class Assignment9
             System.out.println("IO Exception");
         }
 
+        //declare formatting for each unique value
+        DecimalFormat minFormat = new DecimalFormat("#.00");                //format: must have two decimals after point
+
+        DecimalFormat oddFormat = new DecimalFormat("0.0##");             //format: must have at least 1 deicmal after the point
+        oddFormat.setRoundingMode(RoundingMode.HALF_UP);                    //        up to 3 decimals. Round up from .5 and higher
+
+        DecimalFormat posFormat = new DecimalFormat("0.#");               //format: can have up to 1 decimal after the point but 
+        posFormat.setRoundingMode(RoundingMode.HALF_DOWN);                  //        but not required. Round down decimal less than 0.5
+
         // Call recursive functions findMin, findSumAtOdd, findPositiveSum, findNegative
-        DecimalFormat minFormat = new DecimalFormat("#.00");
-
-        DecimalFormat oddFormat = new DecimalFormat("###.0##");
-        oddFormat.setRoundingMode(RoundingMode.HALF_UP);
-
-        DecimalFormat posFormat = new DecimalFormat("###.#");
-        posFormat.setRoundingMode(RoundingMode.HALF_DOWN);
-
         double min = findMin(numbers, 0, i, 0);
         double oddSum = findSumAtOdd(numbers, 0, i);
         double posSum = findPositiveSum(numbers, 0, i); //possum
@@ -78,23 +78,24 @@ public class Assignment9
     // Recursive static method to find the smallest number in the array
     public static double findMin(double[] numbers, int startIndex, int endIndex, double min)
     {
-        if(startIndex == endIndex) {
+        if(startIndex == endIndex) {    //base case returns whatever mind ther eis
             return min;
-        } else if(numbers[startIndex] < min) {
+        } else if(numbers[startIndex] < min) {  //if value is less than the minimum, set the new min to the value
             min = numbers[startIndex];
         }
-        return findMin(numbers, startIndex+1, endIndex, min);
+        return findMin(numbers, startIndex+1, endIndex, min);   //recursively call list of numbers moving start 1 ahead
 
     }
     
+    //recursively find the sum of every odd number in the array
     public static double findSumAtOdd(double[] numbers, int startIndex, int endIndex)
     {
-        if(startIndex >= endIndex) {
+        if(startIndex >= endIndex) {    //if whole array is traversed, call base case and return 0
             return 0;
-        } else if(startIndex % 2 != 0) {
-            return numbers[startIndex] + findSumAtOdd(numbers, startIndex+2, endIndex);
-        } else {
-            return findSumAtOdd(numbers, startIndex+1, endIndex);
+        } else if(startIndex % 2 != 0) {    //if position is odd
+            return numbers[startIndex] + findSumAtOdd(numbers, startIndex+2, endIndex); //add value then call recursive to traverse rest of the array
+        } else {                                                                        //move array size by 2 to move onto next odd position
+            return findSumAtOdd(numbers, startIndex+1, endIndex); //if position is even then add nothing and move array forward by 1 to get to odd position
         }
     }
 
@@ -102,25 +103,27 @@ public class Assignment9
     // between the indexes startIndex and endIndex (parameter)
     public static double findPositiveSum(double[] numbers, int startIndex, int endIndex)
     {
-        if(startIndex == endIndex) {
+        if(startIndex == endIndex) { //base case, array traversered
             return 0;
-        } else if(numbers[startIndex] > 0) {
-            return numbers[startIndex] + findPositiveSum(numbers, startIndex+1, endIndex);
+        } else if(numbers[startIndex] > 0) {    //when positive
+            return numbers[startIndex] + findPositiveSum(numbers, startIndex+1, endIndex);  //add current value then recursively call method, moving start index by 1
         } else {
-            return findPositiveSum(numbers, startIndex+1, endIndex);
+            return findPositiveSum(numbers, startIndex+1, endIndex);    //when not positive, move recursion by 1 
         }
+        //value of 0 not tested because addition of 0 is unnecessary
     }
 
     // Recursive static method to find how many negative numbers are between the
     // indexes startIndex and endIndex
     public static int findNegative(double[] numbers, int startIndex, int endIndex)
     {
-        if(startIndex == endIndex) {
+        if(startIndex == endIndex) {    //base case
             return 0;
-        } else if(numbers[startIndex] < 0) {
-            return 1 + findNegative(numbers, startIndex+1, endIndex);
+        } else if(numbers[startIndex] < 0) {    //when negative
+            return 1 + findNegative(numbers, startIndex+1, endIndex);   //add 1 then call recursion moving start by 1
         } else {
-            return findNegative(numbers, startIndex+1, endIndex);
+            return findNegative(numbers, startIndex+1, endIndex);       //move recursion by 1 without adding when not negative
         }
+        //value of 0 not tested because addition of 0 is unnecessary
     }
 }// End Assignment9 class
