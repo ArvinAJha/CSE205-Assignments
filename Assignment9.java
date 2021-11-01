@@ -79,14 +79,14 @@ public class Assignment9
     public static double findMin(double[] numbers, int startIndex, int endIndex)
     {
         double min;
-        if(startIndex == endIndex) {
+        if(startIndex == endIndex) {    //base case
             return numbers[startIndex];
         } else {
-            min = findMin(numbers, startIndex+1, endIndex);
-            if(numbers[startIndex] <= min) {
-                return numbers[startIndex];
+            min = findMin(numbers, startIndex+1, endIndex); //recursively calls function until reaches base case
+            if(numbers[startIndex] <= min) {    //compares the current minimum to the next position
+                return numbers[startIndex];     //returns value of the new min
             } else {
-                return min;
+                return min;                     //returns value of the old min
             }
         }
 
