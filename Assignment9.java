@@ -83,7 +83,7 @@ public class Assignment9
             return numbers[startIndex];
         } else {
             min = findMin(numbers, startIndex+1, endIndex); //recursively calls function until reaches base case
-            if(numbers[startIndex] <= min) {    //compares the current minimum to the next position
+            if(numbers[startIndex] <= min) {    //compares the current minimum to the previous position
                 return numbers[startIndex];     //returns value of the new min
             } else {
                 return min;                     //returns value of the old min
