@@ -13,6 +13,8 @@ import java.io.*;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import javax.naming.ldap.SortControl;
+
 public class Assignment9
 {
     //the main method listens for input using a Buffered reader and calls methods to compute required values
@@ -62,7 +64,7 @@ public class Assignment9
         posFormat.setRoundingMode(RoundingMode.HALF_DOWN);                  //        but not required. Round down decimal less than 0.5
 
         // Call recursive functions findMin, findSumAtOdd, findPositiveSum, findNegative
-        double min = findMin(numbers, 0, i, 0);
+        double min = findMin(numbers, 0, i);
         double oddSum = findSumAtOdd(numbers, 0, i);
         double posSum = findPositiveSum(numbers, 0, i); //possum
         int neg = findNegative(numbers, 0, i);
@@ -76,14 +78,19 @@ public class Assignment9
     } // End main method
 
     // Recursive static method to find the smallest number in the array
-    public static double findMin(double[] numbers, int startIndex, int endIndex, double min)
+    public static double findMin(double[] numbers, int startIndex, int endIndex)
     {
-        if(startIndex == endIndex) {    //base case returns whatever mind ther eis
-            return min;
-        } else if(numbers[startIndex] < min) {  //if value is less than the minimum, set the new min to the value
-            min = numbers[startIndex];
+        double min;
+        if(startIndex == endIndex) {
+            return numbers[startIndex];
+        } else {
+            min = findMin(numbers, startIndex+1, endIndex);
+            if(numbers[startIndex] <= min) {
+                return numbers[startIndex];
+            } else {
+                return min;
+            }
         }
-        return findMin(numbers, startIndex+1, endIndex, min);   //recursively call list of numbers moving start 1 ahead
 
     }
     
