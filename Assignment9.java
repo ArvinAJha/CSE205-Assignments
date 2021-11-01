@@ -13,8 +13,6 @@ import java.io.*;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import javax.naming.ldap.SortControl;
-
 public class Assignment9
 {
     //the main method listens for input using a Buffered reader and calls methods to compute required values
