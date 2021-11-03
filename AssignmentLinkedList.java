@@ -1,6 +1,5 @@
-import java.util.Comparator;
 
-public class AssignmentLinkedList implements Comparator {
+public class AssignmentLinkedList {
 
     private Assignment head; //head of linked list
     private int numOfAssignments;
@@ -25,7 +24,7 @@ public class AssignmentLinkedList implements Comparator {
     }
     //****** end of private class *****/
 
-    /* linked list constructors */
+    //****** constructors *****/
 
     //create empty linked list
     public AssignmentLinkedList() {
@@ -40,6 +39,8 @@ public class AssignmentLinkedList implements Comparator {
         numOfAssignments = 1;
         assignmentSum = 0;
     }
+
+    //****** methods *****/
 
     //add assignment to front of list
     public void addToFront(int value, int totalValue, String name) {
@@ -146,19 +147,6 @@ public class AssignmentLinkedList implements Comparator {
     }
 
     public int getAssignmentValueTotal(String name) {   //searches for the correct assignment then gets the denom of it
-        return 0;
-    }
-
-    public void sortAssignments() {
-
-    }
-
-    private Assignment searchForAssignment() {
-        return null;
-    }
-
-    @Override
-    public int compare(Object o1, Object o2) {
         return 0;
     }
     
