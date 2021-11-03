@@ -1,29 +1,35 @@
-import java.util.ArrayList;
-
 public class Course {
 
     private String name, code;
-    private int assignmentNum, quizNum, testNum;
-    private double assignmentTotal, quizTotal, testTotal;
-    private double assignmentWeight, testWeight, quizWeight;
     private boolean lowestTestDropped;
-    private double ABounds, APlusBounds, AMinusBounds, BPlusBounds, BBounds, BMinusBounds, CPlusBounds, CBounds, CMinusBounds, DPlusBoubds, DBoubds, DMinusBoubds, EBounds;
+    private double ABounds, APlusBounds, AMinusBounds, BPlusBounds, BBounds, BMinusBounds, CPlusBounds, CBounds, CMinusBounds, DPlusBounds, DBounds, DMinusBounds, EBounds;
+    private AssignmentLinkedList assignments;
+    private double assignmentPercentWorth;
+    private QuizLinkedList quizzes;
+    private double quizWorth;
+    private TestLinkedList tests;
+    private double testWorth;
 
-    private double finalGrade;
-    private String finalLetterGrade;
-    
-    private ArrayList<Double> tests;
 
-
-    public Course (String name, String code, int assignmentNum, int quizNum, int testNum, double assignmentTotal, double quizTotal, double testTotal) {
+    public Course (String name, String code, double assignmentWorth, double quizWorth, double testWorth, double ABounds, double APlusBounds, double AMinusBounds, double BPlusBounds, double BBounds, double BMinusBounds, double CPlusBounds, double CBounds, double CMinusBounds, double DPlusBoubds, double DBoubds, double DMinusBoubds, double EBounds) {
         this.name = name;
         this.code = code;
-        this.assignmentNum = assignmentNum;
-        this.quizNum = quizNum;
-        this.testNum = testNum;
-        this.assignmentTotal = assignmentTotal;
-        this.quizTotal = quizTotal;
-        this.testTotal = testTotal;
+        assignments = new AssignmentLinkedList();
+        quizzes = new QuizLinkedList();
+        tests = new TestLinkedList();
+        this.ABounds = ABounds;
+        this.APlusBounds = APlusBounds;
+        this.AMinusBounds = AMinusBounds;
+        this.BPlusBounds = BPlusBounds;
+        this.BBounds = BBounds;
+        this.BMinusBounds = BMinusBounds;
+        this.CPlusBounds = CPlusBounds;
+        this.CBounds = CBounds;
+        this.CMinusBounds = CMinusBounds;
+        this.DPlusBounds = DPlusBoubds;
+        this.DBounds = DBoubds;
+        this.DMinusBounds = DMinusBoubds;
+        this.EBounds = EBounds;
     }
 
     //getters
@@ -33,23 +39,35 @@ public class Course {
     public String getCode() {
         return code;
     }
-    public int getAssignmentNum() {
-        return assignmentNum;
+    public AssignmentLinkedList getAssignmentList() {
+        return assignments;
     }
-    public int getQuizNum() {
-        return quizNum;
+    public QuizLinkedList getQuizList() {
+        return quizzes;
     }
-    public int getTestNum() {
-        return testNum;
+    public TestLinkedList getTestList() {
+        return tests;
     }
-    public double getAssignmentTotal() {
-        return assignmentTotal;
+
+    public String getBounds(String bounds) {
+        String switchString = bounds.toUpperCase();
+        String resultString  = "";
+
+        switch (switchString) {
+
+            case "A": resultString = APlusBounds + "/" + ABounds + "/" + AMinusBounds;
+            case "B": resultString = BPlusBounds + "/" + BBounds + "/" + BMinusBounds;
+            case "C": resultString = CPlusBounds + "/" + CBounds + "/" + CMinusBounds;
+            case "D": resultString = DPlusBounds + "/" + DBounds + "/" + DMinusBounds;
+            case "E": resultString = EBounds + "/";
+            default: resultString = "NONE/";
+        }
+
+        return resultString;
     }
-    public double getQuizTotal() {
-        return quizTotal;
-    }
-    public double testTotal() {
-        return testTotal;
+
+    public boolean isLowestTestDropped() {
+        return lowestTestDropped;
     }
 
     //setters
@@ -59,17 +77,13 @@ public class Course {
     public void setCode(String code) {
         this.code = code;
     }
-    public void setAssignmentNum(int assignmentNum) {
-        this.assignmentNum = assignmentNum;
-    }
-    public void setQuizNum(int quizNum) {
-        this.quizNum = quizNum;
-    }
-    public void setTestNum(int testNum) {
-        this.testNum = testNum;
-    }
 
-    private void calculateGrade() {
+    //methods for calculation 
+    public int getNumOfAssignments() {
+        return assignments.getNumOfAssignment();
+    }
+    public int getAssignmentSum() {
+        return assignments.getAssignmentSum();
     }
 
 }
