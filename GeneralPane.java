@@ -1,6 +1,7 @@
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,7 +16,7 @@ public class GeneralPane extends BorderPane {
 
 
     private VBox assignmentsBox, quizBox, testBox;
-    private ScrollBar bar1, bar2, bar3;
+    private ScrollPane bar1, bar2, bar3;
     private HBox assignmentGradeBox, quizGradeBox, testGradeBox;
     private Label assignmentGradeLabel, assignmentWorth, quizGradeLabel, quizWorth, testGradeLabel, testWorth;
     private final Label assignmentLabel = new Label("Assignments");
@@ -31,15 +32,23 @@ public class GeneralPane extends BorderPane {
 
         assignmentNode = new VBox();
 
-        //middle part of node
+        //bottom part of node
         assignmentGradeBox = new HBox();
         assignmentGradeLabel = new Label("grade");  
         assignmentWorth = new Label("worth");
         assignmentGradeBox.getChildren().addAll(assignmentGradeLabel, assignmentWorth);
 
+        //middle part of node
         assignmentsBox = new VBox();
-        bar1 = new ScrollBar();
-        // bar1.setContent
+        bar1 = new ScrollPane();
+        bar1.setContent(assignmentsBox);
+
+        // assignmentsBox.setPrefWidth();
+
+        assignmentNode.getChildren().addAll(assignmentLabel, assignmentsBox, assignmentGradeBox); //assignment node complete
+
+        this.setTop(topBox);
+        this.setCenter(assignmentNode);
 
     }
 }
