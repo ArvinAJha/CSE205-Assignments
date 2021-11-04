@@ -1,5 +1,5 @@
 
-public class AssignmentLinkedList extends NameComparator {
+public class AssignmentLinkedList {
 
     private Assignment head; //head of linked list
     private int numOfAssignments;
