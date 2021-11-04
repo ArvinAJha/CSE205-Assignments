@@ -1,5 +1,5 @@
 
-public class AssignmentLinkedList {
+public class AssignmentLinkedList extends NameComparator {
 
     private Assignment head; //head of linked list
     private int numOfAssignments;
@@ -9,14 +9,14 @@ public class AssignmentLinkedList {
     //****** private class for singular assignment ******/
     private class Assignment {
         private int value;      //what you got
-        private int totalValue; //what its out of
+        private int availablePoints; //what its out of
         private String name;
         private Assignment next;
 
         //assignment constructor
         public Assignment(int valueObtained, int totalValue, String name, Assignment link) {
             this.value = valueObtained;
-            this.totalValue = totalValue;
+            this.availablePoints = totalValue;
             this.name = name;
             next = link;
         }
@@ -77,14 +77,14 @@ public class AssignmentLinkedList {
 
     public void remove (String name, int value, int totalValue) {
         if(head != null) {  //list isnt empty
-            if(head.name.equalsIgnoreCase(name) && head.value == value && head.totalValue == totalValue) {  //if element is first 
+            if(head.name.equalsIgnoreCase(name) && head.value == value && head.availablePoints == totalValue) {  //if element is first 
                 head = head.next;
                 numOfAssignments--;
             } else {    //if element is not at the start
                 Assignment previous = head;
                 Assignment current = head.next;
 
-                while(current != null && !current.name.equalsIgnoreCase(name) && head.value != value && head.totalValue != totalValue) {
+                while(current != null && !current.name.equalsIgnoreCase(name) && head.value != value && head.availablePoints != totalValue) {
                     previous = current;
                     current = current.next;
                 }
@@ -125,7 +125,7 @@ public class AssignmentLinkedList {
 
         while(current.next != null) {
             current = current.next;
-            System.out.print("Name: " + current.name + "\nValue: " + current.name + "\nTotal Value: " + current.totalValue);
+            System.out.print("Name: " + current.name + "\nValue: " + current.name + "\nTotal Value: " + current.availablePoints);
         }
 
         System.out.println();
@@ -146,8 +146,19 @@ public class AssignmentLinkedList {
         return assignmentSum;
     }
 
-    public int getAssignmentValueTotal(String name) {   //searches for the correct assignment then gets the denom of it
-        return 0;
+    public int getAvailablePointsSum() {       //calculates the stuff for the bottom of the assignment fraction
+        //should be avaible value + available value ... until they have all been added
+        Assignment current = head;
+        while(current.next != null) {
+            assignmentValueTotal += current.availablePoints;
+            current = current.next;
+        }
+        return assignmentValueTotal;
+    }
+
+    public void sortByName() {
+        //code here
+        //idk how but ur gonna have to do it
     }
     
 }

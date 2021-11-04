@@ -32,6 +32,11 @@ public class Course {
         this.EBounds = EBounds;
     }
 
+    public void printAll() {
+        assignments.printList();
+        //tests and quizzes here too
+    }
+
     //getters
     public String getName() {
         return name;
@@ -78,12 +83,14 @@ public class Course {
         this.code = code;
     }
 
-    //methods for calculation 
-    public int getNumOfAssignments() {
-        return assignments.getNumOfAssignment();
+    public void sortByName() {
+        assignments.sortByName();
+        //tests.sort();
+        //quizzes.sort();
     }
-    public int getAssignmentSum() {
-        return assignments.getAssignmentSum();
+
+    public double calculate() { //  MAKE SURE TO HAVE THE TEST AND QUIZZES
+        return assignments.getAssignmentSum()/assignments.getAvailablePointsSum() * assignmentPercentWorth;
     }
 
 }
