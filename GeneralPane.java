@@ -43,7 +43,6 @@ public class GeneralPane extends BorderPane {
         bar1 = new ScrollPane();
         bar1.setContent(assignmentsBox);
 
-        // assignmentsBox.setPrefWidth();
 
         assignmentNode.getChildren().addAll(assignmentLabel, assignmentsBox, assignmentGradeBox); //assignment node complete
 
