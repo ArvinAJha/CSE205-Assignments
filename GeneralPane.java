@@ -1,12 +1,11 @@
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class GeneralPane extends BorderPane {
+public class GeneralPane extends BorderPane { //grid pane
 
     private ComboBox<Course> courseDropDown;
     private Label finalGradeLabel;
@@ -44,10 +43,11 @@ public class GeneralPane extends BorderPane {
         bar1.setContent(assignmentsBox);
 
 
-        assignmentNode.getChildren().addAll(assignmentLabel, assignmentsBox, assignmentGradeBox); //assignment node complete
+        assignmentNode.getChildren().addAll(assignmentLabel, assignmentsBox); //assignment node complete
 
         this.setTop(topBox);
         this.setCenter(assignmentNode);
+        this.setBottom(assignmentGradeBox);
 
     }
 }
