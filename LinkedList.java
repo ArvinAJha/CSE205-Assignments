@@ -86,8 +86,19 @@ public class LinkedList
   //then it throws an exception.
   public Object get(int index)
    {
-       
 
+      if(index < 0 || index > size()) {
+         throw new IndexOutOfBoundsException();
+      }
+       
+      ListIterator iterator = listIterator();
+      int count = 0;
+      while(iterator.hasNext() && count < index) {
+         count++;
+         iterator.next();
+      }
+
+      return iterator.next();
 
 
 
@@ -99,13 +110,33 @@ public class LinkedList
    public Object remove(int index)
     {
         
+      if(index < 0 || index > size()-1) {
+         throw new IndexOutOfBoundsException();
+      }
 
+      ListIterator iterator = listIterator();
+      int count = 0;
+      Object removedObj = null;
 
+      if(index == count) {
+         removedObj = iterator.next();
+         iterator.remove();
+         return removedObj;
+      }
 
+      while(count < index) {
 
+         iterator.next();
+         count++;
 
+         if(index == count) {
+            removedObj = iterator.next();
+            iterator.remove();
+            return removedObj;
+         }
+      }
 
-
+      return null;
     }
 
    //search method returns the index of the parameter object
@@ -113,9 +144,19 @@ public class LinkedList
    //exits. If the index is out of bounds, then it throws an exception.
    public int search(Object element)
     {
-       
+       ListIterator iterator = listIterator();
 
-
+       int count = 0;
+       while(iterator.hasNext()) {
+          if(count > size()-1) {
+             throw new IndexOutOfBoundsException();
+          } else if(iterator.next().equals(element)) {
+            return count;
+          } else {
+             count++;
+          }
+       }
+       return -1;
 
 
     }
@@ -131,7 +172,28 @@ public class LinkedList
    public void appendAfter(Object str1, Object str2)
     {
      
+      int index = search(str1);
+      ListIterator iterator = listIterator();
+      int count = 0;
 
+      if(index == -1) {
+         add(size(), str2);
+      } else if(count == index) {
+         iterator.next();
+         iterator.add(str2);
+      } else {
+         while(count < index) {
+
+            count++;
+            iterator.next();
+
+            if(count == index) {
+               iterator.next();
+               iterator.add(str2);
+               break;
+            }
+         }
+      }
 
 
 
@@ -144,9 +206,16 @@ public class LinkedList
    public int countOccurrences(Object element)
     {
         
+      int count = 0;
+      ListIterator iterator = listIterator();
 
+      while(iterator.hasNext()) {
+         if(iterator.next().equals(element)) {
+            count++;
+         }
+      }
 
-
+      return count;
 
 
 
@@ -156,10 +225,14 @@ public class LinkedList
    //that is, the number of elements in it.
    public int size()
     {
-      
+      int count = 0;
+      ListIterator iterator = listIterator();
+      while(iterator.hasNext()){
+         iterator.next();
+         count++;
+      }
 
-
-
+      return count;
 
     }
 
@@ -169,10 +242,13 @@ public class LinkedList
    //in the linked list.
    public String toString()
     {
+      String sum = "";
+      ListIterator iterator = listIterator();
+      while(iterator.hasNext()) {
+         sum += iterator.next() + " ";
+      }
 
-      
-
-
+      return "{ " + sum + "}\n";
 
     }
 
