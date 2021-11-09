@@ -32,6 +32,27 @@ public class Course {
         this.EBounds = EBounds;
     }
 
+    public Course () {
+        this.name = "name";
+        this.code = "code";
+        assignments = new AssignmentLinkedList();
+        quizzes = new QuizLinkedList();
+        tests = new TestLinkedList();
+        this.ABounds = 0;
+        this.APlusBounds = 0;
+        this.AMinusBounds = 0;
+        this.BPlusBounds = 0;
+        this.BBounds = 0;
+        this.BMinusBounds = 0;
+        this.CPlusBounds = 0;
+        this.CBounds = 0;
+        this.CMinusBounds = 0;
+        this.DPlusBounds = 0;
+        this.DBounds = 0;
+        this.DMinusBounds = 0;
+        this.EBounds = 0;
+    }
+
     public void printAll() {
         assignments.printList();
         //tests and quizzes here too

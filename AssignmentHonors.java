@@ -24,6 +24,7 @@ public class AssignmentHonors extends Application
         StackPane rootPane = new StackPane();
 
         ArrayList<Course> courselist = new ArrayList<Course>();
+        courselist.add(new Course());
         
         tabPane = new TabPane();
         generalPane = new GeneralPane(courselist);
