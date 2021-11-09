@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -20,9 +22,11 @@ public class AssignmentHonors extends Application
     public void start(Stage stage) throws Exception {
 
         StackPane rootPane = new StackPane();
+
+        ArrayList<Course> courselist = new ArrayList<Course>();
         
         tabPane = new TabPane();
-        generalPane = new GeneralPane();
+        generalPane = new GeneralPane(courselist);
         anxietyPane = new AnxietyPane();
         coursePane = new CoursePane();
 

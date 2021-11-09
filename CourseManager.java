@@ -3,13 +3,10 @@ import java.util.ArrayList;
 
 public class CourseManager implements Serializable {
     
-    private ArrayList<Course> courseList;
-
     public CourseManager(ArrayList<Course> list) {
-        courseList = list;
     }
 
-    public void printList() {
+    public void printList(ArrayList<Course> courseList) {
         for(int i = 0; i < courseList.size()-1; i++) {
             System.out.println(courseList.get(i).getName());
 
