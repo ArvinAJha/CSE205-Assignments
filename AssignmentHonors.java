@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class AssignmentHonors extends Application
 {
-    public static final String WINTITLE = "Honors Project: Drawing Circles";
+    public static final String WINTITLE = "Honors Project";
     public static final int WINSIZE_X = 400, WINSIZE_Y = 400;
 
     private TabPane tabPane;
