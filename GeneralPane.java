@@ -13,70 +13,56 @@ import javafx.scene.layout.VBox;
 
 public class GeneralPane extends BorderPane { //grid pane
 
-    private ComboBox<Course> courseDropDown;
-    private Label finalGradeLabel;
-    private GridPane topBox;
-
-    // private VBox assignmentNode, quizNode, testNode;
     private ArrayList<Course> courselist; 
 
-    private VBox assignmentsBox, quizBox, testBox;
-    private ScrollPane bar1, bar2, bar3;
-    private HBox assignmentGradeBox, quizGradeBox, testGradeBox;
-    private Label assignmentGradeLabel, assignmentWorth, quizGradeLabel, quizWorth, testGradeLabel, testWorth;
+    private ComboBox<Course> courseDropDown;
 
-    private Label assignmentLabel;
-    private Label quizLabel;
-    private Label testLabel = new Label("Test");
+    private VBox assignmentsBox, quizBox, testBox;
+
+    private Label finalGradeLabel;
+    private Label assignmentGradeLabel, assignmentWorth, quizGradeLabel, quizWorth, testGradeLabel, testWorth;
 
     public GeneralPane(ArrayList<Course> list) {
 
-        /** General Nodes */
         courselist = list;
 
+        /** Dropdown and total grade */
         courseDropDown = new ComboBox<Course>();
-        courseDropDown.getItems().add(courselist.get(0));
-        finalGradeLabel = new Label("This is where the grade will go");
+        finalGradeLabel = new Label("None");
 
         //top part of window
-        topBox = new GridPane();
-            topBox.add(courseDropDown, 0, 0);
-            topBox.add(finalGradeLabel, 1, 0);
+        GridPane topBox = new GridPane();
+        topBox.add(courseDropDown, 0, 0);
+        topBox.add(finalGradeLabel, 1, 0);
 
-            topBox.setVgap(5);
-            topBox.setHgap(5);
+        topBox.setVgap(5);
+        topBox.setHgap(5);
 
-            courseDropDown.setMaxWidth(Double.MAX_VALUE);
-            courseDropDown.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
+        courseDropDown.setMaxWidth(Double.MAX_VALUE);
+        courseDropDown.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
 
-            finalGradeLabel.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
-            finalGradeLabel.setAlignment(Pos.CENTER);
+        finalGradeLabel.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
+        finalGradeLabel.setAlignment(Pos.CENTER);
 
-            GridPane.setHgrow(courseDropDown, Priority.ALWAYS);
-            GridPane.setHgrow(topBox, Priority.ALWAYS);
-
-
-
-
-
-
+        GridPane.setHgrow(courseDropDown, Priority.ALWAYS);
+        GridPane.setHgrow(topBox, Priority.ALWAYS);
 
         /**
          * Assignments
          */
         //top part of assignment node
-        assignmentLabel = new Label("Assignments");
+        Label assignmentLabel = new Label("Assignments");
         assignmentLabel.setPadding(new Insets(10, 10, 10, 10));
 
         //middle part of node
         assignmentsBox = new VBox();
-        bar1 = new ScrollPane();
+        ScrollPane bar1 = new ScrollPane();
         bar1.setContent(assignmentsBox);
 
         assignmentsBox.setPadding(new Insets(10, 0, 0, 10));
         
         //bottom part of node
-        assignmentGradeBox = new HBox();
+        HBox assignmentGradeBox = new HBox();
         assignmentGradeLabel = new Label("grade");  
         assignmentWorth = new Label("worth");
         assignmentGradeBox.getChildren().addAll(assignmentGradeLabel, assignmentWorth);
@@ -91,7 +77,7 @@ public class GeneralPane extends BorderPane { //grid pane
         //layout settings
         assignmentNode.setPrefWidth(AssignmentHonors.WINSIZE_X/3);
         assignmentNode.setAlignment(Pos.CENTER);
-        assignmentNode.setStyle("-fx-background-color: red");                           //temp
+        assignmentNode.setStyle("-fx-background-color: white");                           //temp
 
         //resize entire assignment column
         GridPane.setVgrow(assignmentNode, Priority.ALWAYS);
@@ -101,27 +87,22 @@ public class GeneralPane extends BorderPane { //grid pane
         GridPane.setVgrow(bar1, Priority.ALWAYS);
         GridPane.setHgrow(bar1, Priority.ALWAYS);
 
-
-
-
-
-
-
         /**
          * Quizzes
          */
         //top part of quiz node
-        quizLabel = new Label("Quizzes");
+        Label quizLabel = new Label("Quizzes");
         quizLabel.setPadding(new Insets(10, 10, 10, 10));
         
         //middle part
         quizBox = new VBox();
-        quizBox.setPadding(new Insets(10, 10, 10, 10));
-        bar2 = new ScrollPane();
+        ScrollPane bar2 = new ScrollPane();
         bar2.setContent(quizBox);
 
+        quizBox.setPadding(new Insets(10, 0, 0, 10));
+
         //bottom part
-        quizGradeBox = new HBox();
+        HBox quizGradeBox = new HBox();
         quizGradeLabel = new Label("quiz grade");
         quizWorth = new Label("quiz worth");
         quizGradeBox.getChildren().addAll(quizGradeLabel, quizWorth);
@@ -129,52 +110,55 @@ public class GeneralPane extends BorderPane { //grid pane
 
         //assemble node
         GridPane quizNode = new GridPane();
-        // quizNode.add(quizLabel, 0, 0);
+        quizNode.add(quizLabel, 0, 0);
         quizNode.add(bar2, 0, 1);
-        // quizNode.add(quizGradeBox, 0, 2);
+        quizNode.add(quizGradeBox, 0, 2);
 
         //layout settngs
         quizNode.setPrefWidth(AssignmentHonors.WINSIZE_X/3);
         quizNode.setAlignment(Pos.TOP_CENTER);
-        quizNode.setStyle("-fx-background-color: black");
+        quizNode.setStyle("-fx-background-color: white");                                       //temp
+
+        GridPane.setVgrow(bar2, Priority.ALWAYS);
+        GridPane.setHgrow(bar2, Priority.ALWAYS);
+
         GridPane.setVgrow(quizNode, Priority.ALWAYS);
         GridPane.setHgrow(quizNode, Priority.ALWAYS);
 
-
-
-
-
         /**
-         * Assignments
+         * Tests
          */
         //top part of assignment node
-        testLabel = new Label("Assignments");
+        Label testLabel = new Label("Tests");
         testLabel.setPadding(new Insets(10, 10, 10, 10));
 
         //middle part of node
         testBox = new VBox();
         testBox.setPadding(new Insets(10, 10, 10, 10));
-        bar3 = new ScrollPane();
-        bar3.setContent(assignmentsBox);
+        ScrollPane bar3 = new ScrollPane();
+        bar3.setContent(testBox);
 
         //bottom part of node
-        testGradeBox = new HBox();
-        testGradeLabel = new Label("grade");  
+        HBox testGradeBox = new HBox();
+        testGradeLabel = new Label("grade");
         testWorth = new Label("worth");
         testGradeBox.getChildren().addAll(testGradeLabel, testWorth);
         testGradeBox.setPadding(new Insets(10, 10, 10, 10));
 
         //assemble assignment vertical node
         GridPane testNode = new GridPane();
-        // assignmentNode.add(assignmentLabel, 0, 0);
+        testNode.add(testLabel, 0, 0);
         testNode.add(bar3, 0, 1);
-        // assignmentNode.add(assignmentGradeBox, 0, 2);
+        testNode.add(testGradeBox, 0, 2);
 
         //layout settings
         // assignmentsBox.setMaxHeight(Double.MAX_VALUE);
         testNode.setPrefWidth(AssignmentHonors.WINSIZE_X/3);
         testNode.setAlignment(Pos.TOP_CENTER);
-        testNode.setStyle("-fx-background-color: red");
+        testNode.setStyle("-fx-background-color: white");                                 //temp
+
+        GridPane.setVgrow(bar3, Priority.ALWAYS);
+        GridPane.setHgrow(bar3, Priority.ALWAYS);
 
         GridPane.setVgrow(testNode, Priority.ALWAYS);
         GridPane.setHgrow(testNode, Priority.ALWAYS);
@@ -186,14 +170,16 @@ public class GeneralPane extends BorderPane { //grid pane
         /**
          * Placement to tab
          */
+        //place into columns
         GridPane finalPane = new GridPane();
         finalPane.add(assignmentNode, 0, 0);
         finalPane.add(quizNode, 1, 0);
         finalPane.add(testNode, 2, 0);
 
+        //place columns into tab
         this.setTop(topBox);
         this.setCenter(finalPane);
-        
-
     }
+
+
 }
