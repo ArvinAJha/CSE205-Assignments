@@ -1,20 +1,20 @@
+package LinkedLists;
 
-public class AssignmentLinkedList {
-
-    private Assignment head; //head of linked list
-    private int numOfAssignments;
-    private int assignmentSum;
-    private int assignmentValueTotal;
+public class GradeLinkedList {
+    private Grade head; //head of linked list
+    private int numOfGrades;
+    private int gradeSum;
+    private int gradeValueTotal;
     
-    //****** private class for singular assignment ******/
-    private class Assignment {
+    //****** private class for singular grade ******/
+    private class Grade {
         private int value;      //what you got
         private int availablePoints; //what its out of
         private String name;
-        private Assignment next;
+        private Grade next;
 
-        //assignment constructor
-        public Assignment(int valueObtained, int totalValue, String name, Assignment link) {
+        //grade constructor
+        public Grade(int valueObtained, int totalValue, String name, Grade link) {
             this.value = valueObtained;
             this.availablePoints = totalValue;
             this.name = name;
@@ -27,51 +27,51 @@ public class AssignmentLinkedList {
     //****** constructors *****/
 
     //create empty linked list
-    public AssignmentLinkedList() {
+    public GradeLinkedList() {
         head = null;
-        numOfAssignments = 0;
-        assignmentSum = 0;
+        numOfGrades = 0;
+        gradeSum = 0;
     }
     
     //create initialized constructor
-    public AssignmentLinkedList(int data1, int data2, String name) { //values of assignment (what you got and total)
-        head = new Assignment(data1, data2, name, null);
-        numOfAssignments = 1;
-        assignmentSum = 0;
+    public GradeLinkedList(int points, int totalPoints, String name) { //values of grade (what you got and total)
+        head = new Grade(points, totalPoints, name, null);
+        numOfGrades = 1;
+        gradeSum = 0;
     }
 
     //****** methods *****/
 
-    //add assignment to front of list
+    //add grade to front of list
     public void addToFront(int value, int totalValue, String name) {
-        numOfAssignments++;
+        numOfGrades++;
 
-        Assignment newAssignment = new Assignment(value, totalValue, name, null);
+        Grade newGrade = new Grade(value, totalValue, name, null);
 
         if(head == null) {  //list empty
-            head = newAssignment;
+            head = newGrade;
         } else {
-            newAssignment.next = head;
-            head = newAssignment;
+            newGrade.next = head;
+            head = newGrade;
         }
     }
     
-    //add assignment to end of list
+    //add grade to end of list
     public void add(int value, int totalValue, String name) {
-        numOfAssignments++;
+        numOfGrades++;
 
-        Assignment newAssignment = new Assignment(value, totalValue, name, null);
+        Grade newGrade = new Grade(value, totalValue, name, null);
 
         if(head == null) {
-            head = newAssignment;
+            head = newGrade;
         } else {
-            Assignment last = head;
+            Grade last = head;
 
             while(last.next != null) {
                 last = last.next;
             }
 
-            last.next = newAssignment;
+            last.next = newGrade;
         }
     }
 
@@ -79,10 +79,10 @@ public class AssignmentLinkedList {
         if(head != null) {  //list isnt empty
             if(head.name.equalsIgnoreCase(name) && head.value == value && head.availablePoints == totalValue) {  //if element is first 
                 head = head.next;
-                numOfAssignments--;
+                numOfGrades--;
             } else {    //if element is not at the start
-                Assignment previous = head;
-                Assignment current = head.next;
+                Grade previous = head;
+                Grade current = head.next;
 
                 while(current != null && !current.name.equalsIgnoreCase(name) && head.value != value && head.availablePoints != totalValue) {
                     previous = current;
@@ -91,21 +91,21 @@ public class AssignmentLinkedList {
 
                 if(current != null) {   //check if whatever ended the loop is the element wanted
                     previous.next = current.next; //cut off current
-                    numOfAssignments--;
+                    numOfGrades--;
                 }
             }
         }
     }
 
     public boolean isEmpty() {
-        return numOfAssignments > 0;
+        return numOfGrades > 0;
     }
 
-    public Assignment getAtIndex(int pos) {
-        if(pos >= 0 && pos <= numOfAssignments-1) {
+    public Grade getAtIndex(int pos) {
+        if(pos >= 0 && pos <= numOfGrades-1) {
             int count = 0; //temporary count 
 
-            Assignment current = head;
+            Grade current = head;
 
             //loop until find position
             while (count != pos) {
@@ -115,13 +115,19 @@ public class AssignmentLinkedList {
 
             return current;
         } else {
-            System.out.println("getAtIndex (assignment) is out of bounds!");
+            System.out.println("getAtIndex (grade) is out of bounds!");
             return null;
         }
     }
 
+    public String toStringAtIndex(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.name + ":\n" + current.value + "  /  " + current.availablePoints;
+    }
+
     public void printList() { 
-        Assignment current = head;
+        Grade current = head;
 
         while(current.next != null) {
             current = current.next;
@@ -131,34 +137,34 @@ public class AssignmentLinkedList {
         System.out.println();
     }
 
-    public int getNumOfAssignment() {
-        return numOfAssignments;
+    public int getNumOfGrade() {
+        return numOfGrades;
     }
 
-    public int getAssignmentSum() { /** REMEMBER TO REST THE SUM WHEN U DELETE AN ASSIGNMENT OR RESET THE THING */
-        Assignment current = head;
-
+    public int getGradeSum() { /** REMEMBER TO REST THE SUM WHEN U DELETE AN GRADE OR RESET THE THING */
+        Grade current = head;
+        if(current == null) {
+            return 0;
+        }
         while(current.next != null) {
-            assignmentSum += current.value;
+            gradeSum += current.value;
             current = current.next;
         }
 
-        return assignmentSum;
+        return gradeSum;
     }
 
-    public int getAvailablePointsSum() {       //calculates the stuff for the bottom of the assignment fraction
+    public int getAvailablePointsSum() {       //calculates the stuff for the bottom of the grade fraction
         //should be avaible value + available value ... until they have all been added
-        Assignment current = head;
+        Grade current = head;
+        if(current == null) {
+            return 0;
+        }
         while(current.next != null) {
-            assignmentValueTotal += current.availablePoints;
+            gradeValueTotal += current.availablePoints;
             current = current.next;
         }
-        return assignmentValueTotal;
+        return gradeValueTotal;
     }
 
-    public void sortByName() {
-        //code here
-        //idk how but ur gonna have to do it
-    }
-    
 }

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
@@ -10,13 +11,13 @@ import javafx.stage.Stage;
 public class AssignmentHonors extends Application
 {
     public static final String WINTITLE = "Honors Project";
-    public static final int WINSIZE_X = 400, WINSIZE_Y = 400;
+    public static final int WINSIZE_X = 800, WINSIZE_Y = 400;
 
     private TabPane tabPane;
     private GeneralPane generalPane;
     private AnxietyPane anxietyPane;
     private CoursePane coursePane;
-    private EditCoursePane editCoursePane;
+    private GradePane gradePane;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -24,11 +25,13 @@ public class AssignmentHonors extends Application
         StackPane rootPane = new StackPane();
 
         ArrayList<Course> courselist = new ArrayList<Course>();
+        ComboBox<Course> courseDropDown = new ComboBox<Course>();
                 
         tabPane = new TabPane();
-        generalPane = new GeneralPane(courselist);
+        generalPane = new GeneralPane(courseDropDown, courselist);
         anxietyPane = new AnxietyPane();
-        coursePane = new CoursePane();
+        gradePane = new GradePane(courselist);
+        coursePane = new CoursePane(gradePane, courseDropDown, courselist);
 
         Tab tab1 = new Tab();
         tab1.setText("General Grades");
@@ -43,8 +46,8 @@ public class AssignmentHonors extends Application
         tab3.setContent(coursePane);
 
         Tab tab4 = new Tab();
-        tab4.setText("Edit Course Options");
-        tab4.setContent(editCoursePane);
+        tab4.setText("Add Grades");
+        tab4.setContent(gradePane);
 
         tab1.setClosable(false);
         tab2.setClosable(false);
@@ -52,7 +55,7 @@ public class AssignmentHonors extends Application
         tab4.setClosable(false);
 
         tabPane.getSelectionModel().select(0);
-        tabPane.getTabs().addAll(tab1, tab2, tab3);
+        tabPane.getTabs().addAll(tab1, tab2, tab3, tab4);
 
         rootPane.getChildren().add(tabPane);
 

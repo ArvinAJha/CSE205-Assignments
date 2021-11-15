@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -13,7 +16,7 @@ import javafx.scene.layout.VBox;
 
 public class GeneralPane extends BorderPane { //grid pane
 
-    private ArrayList<Course> courselist; 
+    private ArrayList<Course> courseList; 
 
     private ComboBox<Course> courseDropDown;
 
@@ -22,13 +25,17 @@ public class GeneralPane extends BorderPane { //grid pane
     private Label finalGradeLabel;
     private Label assignmentGradeLabel, assignmentWorth, quizGradeLabel, quizWorth, testGradeLabel, testWorth;
 
-    public GeneralPane(ArrayList<Course> list) {
+    public GeneralPane(ComboBox<Course> box, ArrayList<Course> list) {
 
-        courselist = list;
+        courseList = list;
 
         /** Dropdown and total grade */
-        courseDropDown = new ComboBox<Course>();
+        // courseDropDown = new ComboBox<Course>();
+        courseDropDown = box;
         finalGradeLabel = new Label("None");
+        
+        //drop down listener
+        courseDropDown.setOnAction(new DropDownListener());
 
         //top part of window
         GridPane topBox = new GridPane();
@@ -181,5 +188,106 @@ public class GeneralPane extends BorderPane { //grid pane
         this.setCenter(finalPane);
     }
 
+
+    private class DropDownListener implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent event) {
+
+            //find current course num on dropdown
+            int currentCourse = courseDropDown.getSelectionModel().getSelectedIndex();
+
+            //update columns (just assignments for now)
+            updateColumns(currentCourse);
+
+            //update final and sub grades
+            finalGradeLabel.setText(getFinalGradeString(currentCourse));
+
+            updateWorth(currentCourse);
+
+
+            System.out.println("hiii");
+                        
+        }
+
+    }
+
+    private void updateColumns(int currentCourse) {
+        CheckBox newAssignment = new CheckBox();
+        CheckBox newQuiz = new CheckBox();
+        CheckBox newTest = new CheckBox();
+
+        if(courseList.size() < 1) {    //when there are no courses, do not update anything
+            return;
+        }
+
+        updateAssignments(newAssignment, currentCourse);
+        updateQuizzes(newQuiz, currentCourse);
+        updateTests(newTest, currentCourse);
+
+    }
+
+    private void updateAssignments(CheckBox newAssignment, int currentCourse) {
+        int count = 0;
+
+        while(count < courseList.get(currentCourse).getAssignmentLinkedList().getNumOfGrade()) {           //while count < size()
+            String assignmentVals = courseList.get(currentCourse).getAssignmentLinkedList().toStringAtIndex(count);
+            newAssignment.setText(assignmentVals);
+
+            assignmentsBox.getChildren().addAll(newAssignment);
+
+            count++;
+        }
+    }
+
+    private void updateQuizzes(CheckBox newQuiz, int currentCourse) {
+        int count = 0;
+
+        while(count < courseList.get(currentCourse).getQuizLinkedList().getNumOfGrade()) {           //while count < size()
+            String assignmentVals = courseList.get(currentCourse).getAssignmentLinkedList().toStringAtIndex(count);
+            newQuiz.setText(assignmentVals);
+
+            assignmentsBox.getChildren().addAll(newQuiz);
+
+            count++;
+        }
+    }
+
+    private void updateTests(CheckBox newTest, int currentCourse) {
+        int count = 0;
+
+        while(count < courseList.get(currentCourse).getTestLinkedList().getNumOfGrade()) {           //while count < size()
+            String assignmentVals = courseList.get(currentCourse).getAssignmentLinkedList().toStringAtIndex(count);
+            newTest.setText(assignmentVals);
+
+            assignmentsBox.getChildren().addAll(newTest);
+
+            count++;
+        }
+    }
+
+    private void updateWorth(int currentCourse) {
+
+        if(courseList.size() < 1) {
+            return;
+        }
+
+        String assignmentW = courseList.get(currentCourse).getAssignmentWorth() + "%";
+        String quizW = courseList.get(currentCourse).getQuizWorth() + "%";
+        String testW = courseList.get(currentCourse).getTestWorth() + "%";
+
+        assignmentWorth.setText(assignmentW);
+        quizWorth.setText(quizW);
+        testWorth.setText(testW);
+    }
+
+    private String getFinalGradeString(int currentCourse) {
+
+        if(courseList.size() < 1) {
+            return "None";
+        }
+
+        return "" + courseList.get(currentCourse).calculate();
+    }
 
 }
