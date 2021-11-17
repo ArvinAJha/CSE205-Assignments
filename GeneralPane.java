@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import LinkedLists.GradeLinkedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,7 +31,6 @@ public class GeneralPane extends BorderPane { //grid pane
         courseList = list;
 
         /** Dropdown and total grade */
-        // courseDropDown = new ComboBox<Course>();
         courseDropDown = box;
         finalGradeLabel = new Label("None");
         
@@ -63,6 +63,7 @@ public class GeneralPane extends BorderPane { //grid pane
 
         //middle part of node
         assignmentsBox = new VBox();
+
         ScrollPane bar1 = new ScrollPane();
         bar1.setContent(assignmentsBox);
 
@@ -84,7 +85,7 @@ public class GeneralPane extends BorderPane { //grid pane
         //layout settings
         assignmentNode.setPrefWidth(AssignmentHonors.WINSIZE_X/3);
         assignmentNode.setAlignment(Pos.CENTER);
-        assignmentNode.setStyle("-fx-background-color: white");                           //temp
+        assignmentNode.setStyle("-fx-background-color: white");
 
         //resize entire assignment column
         GridPane.setVgrow(assignmentNode, Priority.ALWAYS);
@@ -124,7 +125,7 @@ public class GeneralPane extends BorderPane { //grid pane
         //layout settngs
         quizNode.setPrefWidth(AssignmentHonors.WINSIZE_X/3);
         quizNode.setAlignment(Pos.TOP_CENTER);
-        quizNode.setStyle("-fx-background-color: white");                                       //temp
+        quizNode.setStyle("-fx-background-color: white");
 
         GridPane.setVgrow(bar2, Priority.ALWAYS);
         GridPane.setHgrow(bar2, Priority.ALWAYS);
@@ -159,10 +160,9 @@ public class GeneralPane extends BorderPane { //grid pane
         testNode.add(testGradeBox, 0, 2);
 
         //layout settings
-        // assignmentsBox.setMaxHeight(Double.MAX_VALUE);
         testNode.setPrefWidth(AssignmentHonors.WINSIZE_X/3);
         testNode.setAlignment(Pos.TOP_CENTER);
-        testNode.setStyle("-fx-background-color: white");                                 //temp
+        testNode.setStyle("-fx-background-color: white");
 
         GridPane.setVgrow(bar3, Priority.ALWAYS);
         GridPane.setHgrow(bar3, Priority.ALWAYS);
@@ -204,90 +204,83 @@ public class GeneralPane extends BorderPane { //grid pane
             finalGradeLabel.setText(getFinalGradeString(currentCourse));
 
             updateWorth(currentCourse);
-
-
-            System.out.println("hiii");
-                        
+            updateColumnGrade(currentCourse);
         }
 
     }
 
     private void updateColumns(int currentCourse) {
-        CheckBox newAssignment = new CheckBox();
-        CheckBox newQuiz = new CheckBox();
-        CheckBox newTest = new CheckBox();
 
         if(courseList.size() < 1) {    //when there are no courses, do not update anything
             return;
         }
 
-        updateAssignments(newAssignment, currentCourse);
-        updateQuizzes(newQuiz, currentCourse);
-        updateTests(newTest, currentCourse);
+        assignmentsBox.getChildren().clear();
+        quizBox.getChildren().clear();
+        testBox.getChildren().clear();
+        
+        try {
+            updateColumnHelper(courseList.get(currentCourse).getAssignmentLinkedList(), "Assignment");
+            updateColumnHelper(courseList.get(currentCourse).getQuizLinkedList(), "Quiz");
+            updateColumnHelper(courseList.get(currentCourse).getTestLinkedList(), "Test");
+        } catch (Exception e) {}
 
     }
 
-    private void updateAssignments(CheckBox newAssignment, int currentCourse) {
+    private void updateColumnHelper(GradeLinkedList list, String box) {
         int count = 0;
 
-        while(count < courseList.get(currentCourse).getAssignmentLinkedList().getNumOfGrade()) {           //while count < size()
-            String assignmentVals = courseList.get(currentCourse).getAssignmentLinkedList().toStringAtIndex(count);
-            newAssignment.setText(assignmentVals);
+        try {
+            while(count < list.getNumOfGrade()) {           //while count < size()
+                CheckBox newCourseCheckBox = new CheckBox();
+                newCourseCheckBox.setPadding(new Insets(10, 10, 10, 10));
 
-            assignmentsBox.getChildren().addAll(newAssignment);
+                String assignmentVals = list.toStringAtIndex(count);
+                newCourseCheckBox.setText(assignmentVals);
+    
+                if(box.equals("Assignment"))
+                    assignmentsBox.getChildren().addAll(newCourseCheckBox);
+                else if(box.equals("Quiz"))
+                    quizBox.getChildren().addAll(newCourseCheckBox);
+                else
+                    testBox.getChildren().addAll(newCourseCheckBox);
 
-            count++;
-        }
-    }
-
-    private void updateQuizzes(CheckBox newQuiz, int currentCourse) {
-        int count = 0;
-
-        while(count < courseList.get(currentCourse).getQuizLinkedList().getNumOfGrade()) {           //while count < size()
-            String assignmentVals = courseList.get(currentCourse).getAssignmentLinkedList().toStringAtIndex(count);
-            newQuiz.setText(assignmentVals);
-
-            assignmentsBox.getChildren().addAll(newQuiz);
-
-            count++;
-        }
-    }
-
-    private void updateTests(CheckBox newTest, int currentCourse) {
-        int count = 0;
-
-        while(count < courseList.get(currentCourse).getTestLinkedList().getNumOfGrade()) {           //while count < size()
-            String assignmentVals = courseList.get(currentCourse).getAssignmentLinkedList().toStringAtIndex(count);
-            newTest.setText(assignmentVals);
-
-            assignmentsBox.getChildren().addAll(newTest);
-
-            count++;
-        }
+    
+                count++;
+            }
+        } catch (IndexOutOfBoundsException e) {}
     }
 
     private void updateWorth(int currentCourse) {
 
-        if(courseList.size() < 1) {
-            return;
-        }
+        try {
+            String assignmentW = courseList.get(currentCourse).getAssignmentWorth() + "%";
+            String quizW = courseList.get(currentCourse).getQuizWorth() + "%";
+            String testW = courseList.get(currentCourse).getTestWorth() + "%";
+    
+            assignmentWorth.setText(assignmentW);
+            quizWorth.setText(quizW);
+            testWorth.setText(testW);
+        } catch (Exception e) {}
+    }
 
-        String assignmentW = courseList.get(currentCourse).getAssignmentWorth() + "%";
-        String quizW = courseList.get(currentCourse).getQuizWorth() + "%";
-        String testW = courseList.get(currentCourse).getTestWorth() + "%";
+    private void updateColumnGrade(int currentCourse) {
 
-        assignmentWorth.setText(assignmentW);
-        quizWorth.setText(quizW);
-        testWorth.setText(testW);
+        //so you're going to have to somehow calculate the grade for the indiv column
+        try {
+            String assignmentG = courseList.get(currentCourse).getAssignmentWorth() + " - ";
+            String quizG = courseList.get(currentCourse).getQuizWorth() + " - ";
+            String testG = courseList.get(currentCourse).getTestWorth() + " - ";
+        } catch (Exception e) {}
     }
 
     private String getFinalGradeString(int currentCourse) {
 
-        if(courseList.size() < 1) {
+        try {
+            return "" + courseList.get(currentCourse).calculate();
+        } catch (Exception e) {
             return "None";
         }
-
-        return "" + courseList.get(currentCourse).calculate();
     }
 
 }

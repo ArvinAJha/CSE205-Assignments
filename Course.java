@@ -1,8 +1,10 @@
+import java.io.Serializable;
+
 import LinkedLists.AssignmentLinkedList;
 import LinkedLists.QuizLinkedList;
 import LinkedLists.TestLinkedList;
 
-public class Course {
+public class Course implements Serializable {
 
     private String name, code;
     private boolean lowestTestDropped;
@@ -75,15 +77,15 @@ public class Course {
 
     public void sortByName() {
         assignments.sortByName();
-        //tests.sort();
-        //quizzes.sort();
+        tests.sort();
+        quizzes.sort();
     }
 
     public double calculate() { //  MAKE SURE TO HAVE THE TEST AND QUIZZES
         try {
             return assignments.getGradeSum()/assignments.getAvailablePointsSum() * assignmentPercentWorth;
         } catch (ArithmeticException e) {
-            System.out.println("Arithmetic exception");
+            
         } 
         
         return 0;

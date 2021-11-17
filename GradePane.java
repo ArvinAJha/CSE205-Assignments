@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+import LinkedLists.GradeLinkedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -46,6 +47,11 @@ public class GradePane extends BorderPane {
         courseDropDown = new ComboBox<Course>();
         gradeDropDown = new ComboBox<String>();
         gradeDropDown.getItems().addAll("Assignment", "Quiz", "Test");
+        gradeDropDown.getSelectionModel().selectFirst();
+
+        //listeners
+        courseDropDown.setOnAction(new courseDropDownHandler());
+        gradeDropDown.setOnAction(new GradeDropDownHandler());
 
         courseDropDown.setPrefWidth(AssignmentHonors.WINSIZE_X);
         gradeDropDown.setPrefWidth(AssignmentHonors.WINSIZE_X);
@@ -88,8 +94,8 @@ public class GradePane extends BorderPane {
         removeGradeButton = new Button("Remove");
 
             //button listener
-            // addCourseButton.setOnAction(new ButtonHandler());
-            // removeGradeButton.setOnAction();
+            addGradeButton.setOnAction(new GradeButtonHandler());
+            removeGradeButton.setOnAction(new GradeRemoveButtonHandler());
 
         //assemble fields and button
         leftSideBox.getChildren().addAll(errorLabel, fieldContainer, addGradeButton);
@@ -122,6 +128,155 @@ public class GradePane extends BorderPane {
 
     }
 
+    private class courseDropDownHandler implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                updateGradeBox();
+            } catch (NullPointerException e) {}
+        }
+
+    }
+
+    private class GradeDropDownHandler implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                updateGradeBox();
+            } catch (NullPointerException e) {
+                errorLabel.setText("No course selected");
+            }
+        }
+        
+    }
+
+    private class GradeButtonHandler implements EventHandler<ActionEvent> {
+
+        String name;
+        int points;
+        int total;
+
+        @Override
+        public void handle(ActionEvent event) {
+            int courseIndex = courseDropDown.getSelectionModel().getSelectedIndex();
+            String gradeType = gradeDropDown.getSelectionModel().getSelectedItem();
+
+            errorLabel.setText("");
+
+            try {
+
+                name = gradeName.getText();
+                points = Integer.parseInt(pointsReceived.getText());
+                total = Integer.parseInt(pointsAvailable.getText());
+
+                if(gradeType.equalsIgnoreCase("Assignment")) {
+                    courseList.get(courseIndex).getAssignmentLinkedList().add(points, total, name);
+                } else if(gradeType.equalsIgnoreCase("Quiz")) {
+                    courseList.get(courseIndex).getQuizLinkedList().add(points, total, name);
+                } else {
+                    courseList.get(courseIndex).getTestLinkedList().add(points, total, name);
+                }
+
+                updateGradeBox();
+
+                gradeName.setText("");
+                pointsReceived.setText("");
+                pointsAvailable.setText("");
+
+        } catch (NumberFormatException e) {
+            errorLabel.setText("Please enter integers for the points.");
+        } catch (NullPointerException e) {
+            errorLabel.setText("There are no courses selected");
+        } catch (IndexOutOfBoundsException e) {
+            errorLabel.setText("There are no courses selected");
+        }
+
+        }
+        
+    }
+
+    private class GradeRemoveButtonHandler implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent event) {
+
+            errorLabel.setText("");
+
+            if(gradesAddedBox.getChildren().isEmpty()) {
+                errorLabel.setText("No grades available");
+                return;
+            }
+
+            try {
+
+                int courseIndex = courseDropDown.getSelectionModel().getSelectedIndex();
+                GradeLinkedList grades = courseList.get(courseIndex).getAssignmentLinkedList();
+
+                removeGrades(grades);
+                updateGradeBox();
+
+            } catch(NullPointerException e) {
+                errorLabel.setText("No courses selected");
+            } catch (IndexOutOfBoundsException e) {
+                errorLabel.setText("No courses selected");
+            }
+        }
+
+    }
+
+    private void removeGrades(GradeLinkedList grades) {
+        for(int i = 0; i < grades.getNumOfGrade(); i++) {
+            CheckBox box = (CheckBox) gradesAddedBox.getChildren().get(i);
+
+            if(box.isSelected()) {
+                gradesAddedBox.getChildren().remove(i);
+
+                /**
+                 * Bro change the remove method later please
+                 */
+                grades.remove(grades.getNameAtPos(i), grades.getValueAtPos(i), grades.getTotalPointsAtPos(i));
+                i--;
+            }
+        }
+    }
+    
+    private void updateGradeBox() {
+
+        gradesAddedBox.getChildren().clear();
+
+        try {
+            int courseIndex = courseDropDown.getSelectionModel().getSelectedIndex();
+            Course course = courseList.get(courseIndex);
+
+            String gradeType = gradeDropDown.getSelectionModel().getSelectedItem();
+
+            switch(gradeType) {
+                case "Assignment": helpUpdate(course.getAssignmentLinkedList()); break;
+                case "Quiz": helpUpdate(course.getQuizLinkedList()); break;
+                case "Test": helpUpdate(course.getTestLinkedList()); break;
+            }
+
+            System.out.println(gradesAddedBox.getChildren().isEmpty());
+        } catch (Exception e) {}
+    }
+    
+    private void helpUpdate(GradeLinkedList list) {
+
+        if(list.getNumOfGrade() == 0) {
+            return;
+        }
+        
+        for(int i = 0; i < list.getNumOfGrade(); i++) {
+            //create checkbox 
+            CheckBox gradeCheckBox = new CheckBox(list.toStringAtIndex(i));
+            gradeCheckBox.setPadding(new Insets(10, 10, 10, 10));
+
+            //add to container
+            gradesAddedBox.getChildren().addAll(gradeCheckBox);
+        }
+    }
 
     public void updateDropDown() {
         courseDropDown.getItems().clear();
@@ -129,9 +284,7 @@ public class GradePane extends BorderPane {
             for(Course aCourse: courseList) {
                 courseDropDown.getItems().add(aCourse);
             }
-        } catch (Exception e) {
-            System.out.println("heh");
-        }
+        } catch (Exception e) {}
     }
 
 }

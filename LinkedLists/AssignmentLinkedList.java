@@ -9,6 +9,12 @@ public class AssignmentLinkedList extends GradeLinkedList{
         super(points, totalPoints, name);
     }
 
+    @Override
+    public String toStringAtIndex(int pos) {
+        return super.getNameAtPos(pos) + ": " + super.getValueAtPos(pos) + "/" + super.getTotalPointsAtPos(pos)
+                + "(" + super.getValueAtPos(pos)/super.getTotalPointsAtPos(pos) + ")";
+    }
+
     public void sortByName () {
 
     }

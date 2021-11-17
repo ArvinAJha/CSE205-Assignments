@@ -126,12 +126,30 @@ public class GradeLinkedList {
         return current.name + ":\n" + current.value + "  /  " + current.availablePoints;
     }
 
+    public String getNameAtPos(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.name;
+    }
+
+    public int getValueAtPos(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.value;
+    }
+
+    public int getTotalPointsAtPos(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.availablePoints;
+    }
+
     public void printList() { 
         Grade current = head;
 
         while(current.next != null) {
+            System.out.print("\nName: " + current.name + "\nValue: " + current.name + "\nTotal Value: " + current.availablePoints);
             current = current.next;
-            System.out.print("Name: " + current.name + "\nValue: " + current.name + "\nTotal Value: " + current.availablePoints);
         }
 
         System.out.println();

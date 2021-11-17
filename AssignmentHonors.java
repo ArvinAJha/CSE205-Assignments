@@ -1,3 +1,9 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -19,19 +25,39 @@ public class AssignmentHonors extends Application
     private CoursePane coursePane;
     private GradePane gradePane;
 
+    private ArrayList<Course> courseList;
+
     @Override
-    public void start(Stage stage) throws Exception {
+    @SuppressWarnings("unchecked")      //ignore this. it will just get rid of warnings.
+    public void start(Stage stage) {
 
         StackPane rootPane = new StackPane();
 
-        ArrayList<Course> courselist = new ArrayList<Course>();
+        try {
+
+            //Read object from file
+            FileInputStream fileInput = new FileInputStream("courseList.txt");      //txt file??
+            ObjectInputStream objectInput = new ObjectInputStream(fileInput);
+
+            courseList = (ArrayList<Course>) objectInput.readObject();
+            System.out.println(courseList.toString());                              //it is never wrote in properly
+
+            objectInput.close();
+        } catch (FileNotFoundException e) {     //if the file has not been found then make one
+            courseList = new ArrayList<Course>();
+            writeObject();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         ComboBox<Course> courseDropDown = new ComboBox<Course>();
                 
         tabPane = new TabPane();
-        generalPane = new GeneralPane(courseDropDown, courselist);
+        generalPane = new GeneralPane(courseDropDown, courseList);
         anxietyPane = new AnxietyPane();
-        gradePane = new GradePane(courselist);
-        coursePane = new CoursePane(gradePane, courseDropDown, courselist);
+        gradePane = new GradePane(courseList);
+        coursePane = new CoursePane(gradePane, courseDropDown, courseList);
 
         Tab tab1 = new Tab();
         tab1.setText("General Grades");
@@ -66,13 +92,21 @@ public class AssignmentHonors extends Application
         stage.show();
     }
 
-    /**
-     * Technically this is not needed for JavaFX applications. Added just in
-     * case.
-     * 
-     * @param args
-     */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void writeObject() {
+        try {
+            FileOutputStream fileout = new FileOutputStream("courseList.txt");
+            ObjectOutputStream objOut = new ObjectOutputStream(fileout);
+
+            objOut.writeObject(courseList);
+            objOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

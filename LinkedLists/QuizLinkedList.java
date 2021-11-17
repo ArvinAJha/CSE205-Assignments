@@ -9,7 +9,7 @@ public class QuizLinkedList extends GradeLinkedList {
         super(points, totalPoints, name);
     }
 
-    public void sortByName() {
+    public void sort() {
         
     }
     

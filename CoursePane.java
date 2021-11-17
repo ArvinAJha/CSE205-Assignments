@@ -158,6 +158,8 @@ public class CoursePane extends ScrollPane {
                 
                 courseList.add(newCourse);
 
+                System.out.println(courseList.toString());
+
                 courseName.setText("");
                 courseCode.setText("");
                 assignmentWorthField.setText("");
@@ -189,31 +191,25 @@ public class CoursePane extends ScrollPane {
 
             try {
                 //list of all courses listed on the side
-                Object[] demolitionedCourses = coursesAddedBox.getChildren().toArray();                          //throw some kind of error here prob
 
-                if(demolitionedCourses.length == 0) {   //no courses selected to be removed
+                if(coursesAddedBox.getChildren().isEmpty()) {   //no courses selected to be removed
                     errorLabel.setText("No courses available for removal");
                     return;
                 }
 
-                int numOfSelected = 0;
-                for(int i = 0; i < demolitionedCourses.length; i++) {
-                    CheckBox box = (CheckBox) demolitionedCourses[i];
-                    if(box.isSelected()) {      //if it is to be removed
-                        courseList.remove(i);                        
-                        coursesAddedBox.getChildren().remove(demolitionedCourses[i]);
+                for(int i = 0; i < courseList.size(); i++) {
+                    CheckBox box = (CheckBox) coursesAddedBox.getChildren().get(i);
 
-                        numOfSelected++;
+                    if(box.isSelected()) {
+                        coursesAddedBox.getChildren().remove(i);
+                        courseList.remove(i);
+                        i--;
                     }
                 }
 
-                if(numOfSelected == 0) {
-                    errorLabel.setText("No courses selected for removal");
-                }
                 updateDropDown();
                 gradePane.updateDropDown();
                 updateBox();
-                System.out.println(courseList.toString());
             } catch (Exception e) {
                 errorLabel.setText("Unidenfitied Error Occurred");
                 e.printStackTrace();
@@ -249,16 +245,6 @@ public class CoursePane extends ScrollPane {
             for(Course aCourse: courseList) {
                 courseDropDown.getItems().add(aCourse);
             }
-        } catch (Exception e) {
-            System.out.println("heh");
-        }
+        } catch (Exception e) {}
     }
 }
-
-/**
-         * This try catch statement is to cover a stranger error where the course list updates before the dropdown.
-         * This calls the update columns method and tries to access the course list only to find nothing there.
-         * Thus, it throws an index out of bounds exception.
-         * 
-         * To prevent updating the drop down menu too often, this try catch was put in place to remove the error more efficently.
-         */
