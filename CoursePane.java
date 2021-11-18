@@ -119,6 +119,10 @@ public class CoursePane extends ScrollPane {
         finalBox.getChildren().addAll(leftSideBox, rightSideBox);
 
         this.setContent(finalBox);
+        
+        updateBox();
+        updateDropDown();
+        gradePane.updateDropDown();
     }
 
     //MAKE SURE TO UPDATE THE DROP DOWN AFTER ADDING A COURSES
@@ -157,8 +161,6 @@ public class CoursePane extends ScrollPane {
                 }
                 
                 courseList.add(newCourse);
-
-                System.out.println(courseList.toString());
 
                 courseName.setText("");
                 courseCode.setText("");

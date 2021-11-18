@@ -36,16 +36,17 @@ public class AssignmentHonors extends Application
         try {
 
             //Read object from file
-            FileInputStream fileInput = new FileInputStream("courseList.txt");      //txt file??
+            FileInputStream fileInput = new FileInputStream("courseList.ser");      //txt file??
             ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 
             courseList = (ArrayList<Course>) objectInput.readObject();
-            System.out.println(courseList.toString());                              //it is never wrote in properly
 
             objectInput.close();
         } catch (FileNotFoundException e) {     //if the file has not been found then make one
+
             courseList = new ArrayList<Course>();
             writeObject();
+            
         } catch(IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -96,12 +97,13 @@ public class AssignmentHonors extends Application
         launch(args);
     }
 
-    private void writeObject() {
+    public void writeObject() {
         try {
-            FileOutputStream fileout = new FileOutputStream("courseList.txt");
+            FileOutputStream fileout = new FileOutputStream("courseList.ser");
             ObjectOutputStream objOut = new ObjectOutputStream(fileout);
 
             objOut.writeObject(courseList);
+            objOut.flush();
             objOut.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

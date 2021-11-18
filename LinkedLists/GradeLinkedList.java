@@ -1,13 +1,15 @@
 package LinkedLists;
 
-public class GradeLinkedList {
+import java.io.Serializable;
+
+public class GradeLinkedList implements Serializable {
     private Grade head; //head of linked list
     private int numOfGrades;
     private int gradeSum;
     private int gradeValueTotal;
     
     //****** private class for singular grade ******/
-    private class Grade {
+    private class Grade implements Serializable {
         private int value;      //what you got
         private int availablePoints; //what its out of
         private String name;
@@ -75,7 +77,7 @@ public class GradeLinkedList {
         }
     }
 
-    public void remove (String name, int value, int totalValue) {
+    public void remove(String name, int value, int totalValue) {
         if(head != null) {  //list isnt empty
             if(head.name.equalsIgnoreCase(name) && head.value == value && head.availablePoints == totalValue) {  //if element is first 
                 head = head.next;
@@ -95,6 +97,19 @@ public class GradeLinkedList {
                 }
             }
         }
+    }
+
+    public void set(Grade grade, int pos) {
+
+        Grade current = head;
+
+        for(int i = 0; current.next != null && i < pos-1; i++) {
+            current = current.next;
+        }
+
+        // Grade temp = current.next;
+        current.next = grade;
+        grade.next = current.next.next;
     }
 
     public boolean isEmpty() {
@@ -184,5 +199,12 @@ public class GradeLinkedList {
         }
         return gradeValueTotal;
     }
+    
+    public double calculateGrade() {
+        if(this.getNumOfGrade() > 0) {
+            return this.getGradeSum() / this.getAvailablePointsSum();
+        }
 
+        return 0;
+    }
 }

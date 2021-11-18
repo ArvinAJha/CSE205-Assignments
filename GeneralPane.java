@@ -186,6 +186,9 @@ public class GeneralPane extends BorderPane { //grid pane
         //place columns into tab
         this.setTop(topBox);
         this.setCenter(finalPane);
+
+        
+
     }
 
 
@@ -268,16 +271,20 @@ public class GeneralPane extends BorderPane { //grid pane
 
         //so you're going to have to somehow calculate the grade for the indiv column
         try {
-            String assignmentG = courseList.get(currentCourse).getAssignmentWorth() + " - ";
-            String quizG = courseList.get(currentCourse).getQuizWorth() + " - ";
-            String testG = courseList.get(currentCourse).getTestWorth() + " - ";
+            String assignmentG = courseList.get(currentCourse).getAssignmentLinkedList().calculateGrade() + " - ";
+            String quizG = courseList.get(currentCourse).getQuizLinkedList().calculateGrade() + " - ";
+            String testG = courseList.get(currentCourse).getTestLinkedList().calculateGrade(courseList.get(currentCourse).isLowestTestDropped())+ " - ";
+
+            assignmentGradeLabel.setText(assignmentG);
+            quizGradeLabel.setText(quizG);
+            testGradeLabel.setText(testG);
         } catch (Exception e) {}
     }
 
     private String getFinalGradeString(int currentCourse) {
 
         try {
-            return "" + courseList.get(currentCourse).calculate();
+            return "" + courseList.get(currentCourse).calculateFinal();
         } catch (Exception e) {
             return "None";
         }

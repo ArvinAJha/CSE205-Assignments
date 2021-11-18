@@ -1,6 +1,10 @@
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import LinkedLists.GradeLinkedList;
@@ -126,6 +130,7 @@ public class GradePane extends BorderPane {
         this.setTop(dropDownBox);
         this.setCenter(addGradeContainer);
 
+        updateGradeBox();
     }
 
     private class courseDropDownHandler implements EventHandler<ActionEvent> {
@@ -258,8 +263,20 @@ public class GradePane extends BorderPane {
                 case "Test": helpUpdate(course.getTestLinkedList()); break;
             }
 
-            System.out.println(gradesAddedBox.getChildren().isEmpty());
         } catch (Exception e) {}
+
+        try {
+            FileOutputStream fileout = new FileOutputStream("courseList.ser");
+            ObjectOutputStream objOut = new ObjectOutputStream(fileout);
+
+            objOut.writeObject(courseList);
+            objOut.flush();
+            objOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     private void helpUpdate(GradeLinkedList list) {
@@ -285,6 +302,19 @@ public class GradePane extends BorderPane {
                 courseDropDown.getItems().add(aCourse);
             }
         } catch (Exception e) {}
+
+        try {
+            FileOutputStream fileout = new FileOutputStream("courseList.ser");
+            ObjectOutputStream objOut = new ObjectOutputStream(fileout);
+
+            objOut.writeObject(courseList);
+            objOut.flush();
+            objOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

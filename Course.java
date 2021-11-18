@@ -75,17 +75,19 @@ public class Course implements Serializable {
         this.code = code;
     }
 
-    public void sortByName() {
+    public void sortLists() {
         assignments.sortByName();
         tests.sort();
         quizzes.sort();
     }
 
-    public double calculate() { //  MAKE SURE TO HAVE THE TEST AND QUIZZES
+    public double calculateFinal() { //  MAKE SURE TO HAVE THE TEST AND QUIZZES
         try {
-            return assignments.getGradeSum()/assignments.getAvailablePointsSum() * assignmentPercentWorth;
+            return assignments.calculateGrade() * assignmentPercentWorth
+                    + quizzes.calculateGrade() * quizWorth
+                    + tests.calculateGrade(lowestTestDropped) * testWorth;
         } catch (ArithmeticException e) {
-            
+            e.printStackTrace();
         } 
         
         return 0;
