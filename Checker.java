@@ -1,3 +1,10 @@
+//Assignment #: 11
+//Name: Arvin Jha
+//StudentID: 1221497264
+//Lecture: 10:10AM - 11:00AM M W F
+// Description: Checker has one method check that reads a String line to determine if all of the braces are present
+                //and returns a custom message if they are all present or if there any missing
+
 import java.util.EmptyStackException;
 import java.util.Stack;
 
