@@ -22,6 +22,9 @@ public class Course implements Serializable {
         assignments = new AssignmentLinkedList();
         quizzes = new QuizLinkedList();
         tests = new TestLinkedList();
+        this.assignmentPercentWorth = assignmentWorth;
+        this.quizWorth = quizWorth;
+        this.testWorth = testWorth;
     }
 
     public Course () {
@@ -75,19 +78,13 @@ public class Course implements Serializable {
         this.code = code;
     }
 
-    public void sortLists() {
-        assignments.sortByName();
-        tests.sort();
-        quizzes.sort();
-    }
-
     public double calculateFinal() { //  MAKE SURE TO HAVE THE TEST AND QUIZZES
         try {
             return assignments.calculateGrade() * assignmentPercentWorth
                     + quizzes.calculateGrade() * quizWorth
                     + tests.calculateGrade(lowestTestDropped) * testWorth;
         } catch (ArithmeticException e) {
-            e.printStackTrace();
+            System.out.println("arth error");
         } 
         
         return 0;

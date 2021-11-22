@@ -160,8 +160,8 @@ public class GradePane extends BorderPane {
     private class GradeButtonHandler implements EventHandler<ActionEvent> {
 
         String name;
-        int points;
-        int total;
+        double points;
+        double total;
 
         @Override
         public void handle(ActionEvent event) {
@@ -173,8 +173,8 @@ public class GradePane extends BorderPane {
             try {
 
                 name = gradeName.getText();
-                points = Integer.parseInt(pointsReceived.getText());
-                total = Integer.parseInt(pointsAvailable.getText());
+                points = Double.parseDouble(pointsReceived.getText());
+                total = Double.parseDouble(pointsAvailable.getText());
 
                 if(gradeType.equalsIgnoreCase("Assignment")) {
                     courseList.get(courseIndex).getAssignmentLinkedList().add(points, total, name);
@@ -190,13 +190,13 @@ public class GradePane extends BorderPane {
                 pointsReceived.setText("");
                 pointsAvailable.setText("");
 
-        } catch (NumberFormatException e) {
-            errorLabel.setText("Please enter integers for the points.");
-        } catch (NullPointerException e) {
-            errorLabel.setText("There are no courses selected");
-        } catch (IndexOutOfBoundsException e) {
-            errorLabel.setText("There are no courses selected");
-        }
+            } catch (NumberFormatException e) {
+                errorLabel.setText("Please enter numbers for the points.");
+            } catch (NullPointerException e) {
+                errorLabel.setText("There are no courses selected");
+            } catch (IndexOutOfBoundsException e) {
+                errorLabel.setText("There are no courses selected");
+            }
 
         }
         
@@ -217,7 +217,18 @@ public class GradePane extends BorderPane {
             try {
 
                 int courseIndex = courseDropDown.getSelectionModel().getSelectedIndex();
-                GradeLinkedList grades = courseList.get(courseIndex).getAssignmentLinkedList();
+                String gradetype = gradeDropDown.getSelectionModel().getSelectedItem();
+
+                GradeLinkedList grades = null;
+
+                if(gradetype.equals("Assignment")) {
+                    grades = courseList.get(courseIndex).getAssignmentLinkedList();
+                }
+                else if(gradetype.equals("Quiz")) {
+                    grades = courseList.get(courseIndex).getQuizLinkedList();
+                } else {
+                    grades = courseList.get(courseIndex).getTestLinkedList();
+                }
 
                 removeGrades(grades);
                 updateGradeBox();

@@ -173,6 +173,7 @@ public class CoursePane extends ScrollPane {
                 errorLabel.setText("Please enter decimal or integers for the percentages.");
             } catch (Exception e) {
                 errorLabel.setText("Duplicate course detected.");
+                e.printStackTrace();
             }
 
             updateBox();

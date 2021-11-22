@@ -4,19 +4,19 @@ import java.io.Serializable;
 
 public class GradeLinkedList implements Serializable {
     private Grade head; //head of linked list
-    private int numOfGrades;
-    private int gradeSum;
-    private int gradeValueTotal;
+    private double numOfGrades;
+    // private double gradeSum;
+    // private double gradeValueTotal;
     
     //****** private class for singular grade ******/
     private class Grade implements Serializable {
-        private int value;      //what you got
-        private int availablePoints; //what its out of
+        private double value;      //what you got
+        private double availablePoints; //what its out of
         private String name;
         private Grade next;
 
         //grade constructor
-        public Grade(int valueObtained, int totalValue, String name, Grade link) {
+        public Grade(double valueObtained, double totalValue, String name, Grade link) {
             this.value = valueObtained;
             this.availablePoints = totalValue;
             this.name = name;
@@ -32,20 +32,18 @@ public class GradeLinkedList implements Serializable {
     public GradeLinkedList() {
         head = null;
         numOfGrades = 0;
-        gradeSum = 0;
     }
     
     //create initialized constructor
-    public GradeLinkedList(int points, int totalPoints, String name) { //values of grade (what you got and total)
+    public GradeLinkedList(double points, double totalPoints, String name) { //values of grade (what you got and total)
         head = new Grade(points, totalPoints, name, null);
         numOfGrades = 1;
-        gradeSum = 0;
     }
 
     //****** methods *****/
 
     //add grade to front of list
-    public void addToFront(int value, int totalValue, String name) {
+    public void addToFront(double value, double totalValue, String name) {
         numOfGrades++;
 
         Grade newGrade = new Grade(value, totalValue, name, null);
@@ -59,7 +57,7 @@ public class GradeLinkedList implements Serializable {
     }
     
     //add grade to end of list
-    public void add(int value, int totalValue, String name) {
+    public void add(double value, double totalValue, String name) {
         numOfGrades++;
 
         Grade newGrade = new Grade(value, totalValue, name, null);
@@ -77,7 +75,8 @@ public class GradeLinkedList implements Serializable {
         }
     }
 
-    public void remove(String name, int value, int totalValue) {
+    public void remove(String name, double value, double totalValue) {
+
         if(head != null) {  //list isnt empty
             if(head.name.equalsIgnoreCase(name) && head.value == value && head.availablePoints == totalValue) {  //if element is first 
                 head = head.next;
@@ -86,7 +85,7 @@ public class GradeLinkedList implements Serializable {
                 Grade previous = head;
                 Grade current = head.next;
 
-                while(current != null && !current.name.equalsIgnoreCase(name) && head.value != value && head.availablePoints != totalValue) {
+                while(current != null && !current.name.equalsIgnoreCase(name) && current.value != value && current.availablePoints != totalValue) {
                     previous = current;
                     current = current.next;
                 }
@@ -97,23 +96,6 @@ public class GradeLinkedList implements Serializable {
                 }
             }
         }
-    }
-
-    public void set(Grade grade, int pos) {
-
-        Grade current = head;
-
-        for(int i = 0; current.next != null && i < pos-1; i++) {
-            current = current.next;
-        }
-
-        // Grade temp = current.next;
-        current.next = grade;
-        grade.next = current.next.next;
-    }
-
-    public boolean isEmpty() {
-        return numOfGrades > 0;
     }
 
     public Grade getAtIndex(int pos) {
@@ -147,13 +129,13 @@ public class GradeLinkedList implements Serializable {
         return current.name;
     }
 
-    public int getValueAtPos(int pos) {
+    public double getValueAtPos(int pos) {
         Grade current = getAtIndex(pos);
 
         return current.value;
     }
 
-    public int getTotalPointsAtPos(int pos) {
+    public double getTotalPointsAtPos(int pos) {
         Grade current = getAtIndex(pos);
 
         return current.availablePoints;
@@ -162,7 +144,7 @@ public class GradeLinkedList implements Serializable {
     public void printList() { 
         Grade current = head;
 
-        while(current.next != null) {
+        while(current != null) {
             System.out.print("\nName: " + current.name + "\nValue: " + current.name + "\nTotal Value: " + current.availablePoints);
             current = current.next;
         }
@@ -170,16 +152,21 @@ public class GradeLinkedList implements Serializable {
         System.out.println();
     }
 
-    public int getNumOfGrade() {
+    public double getNumOfGrade() {
         return numOfGrades;
     }
 
-    public int getGradeSum() { /** REMEMBER TO REST THE SUM WHEN U DELETE AN GRADE OR RESET THE THING */
+    public boolean isEmpty() {
+        return numOfGrades > 0;
+    }
+
+    public double getGradeSum() { /** REMEMBER TO REST THE SUM WHEN U DELETE AN GRADE OR RESET THE THING */
         Grade current = head;
+        double gradeSum = 0;
         if(current == null) {
             return 0;
         }
-        while(current.next != null) {
+        while(current != null) {
             gradeSum += current.value;
             current = current.next;
         }
@@ -187,13 +174,14 @@ public class GradeLinkedList implements Serializable {
         return gradeSum;
     }
 
-    public int getAvailablePointsSum() {       //calculates the stuff for the bottom of the grade fraction
+    public double getAvailablePointsSum() {       //calculates the stuff for the bottom of the grade fraction
         //should be avaible value + available value ... until they have all been added
         Grade current = head;
+        double gradeValueTotal = 0;
         if(current == null) {
             return 0;
         }
-        while(current.next != null) {
+        while(current != null) {
             gradeValueTotal += current.availablePoints;
             current = current.next;
         }

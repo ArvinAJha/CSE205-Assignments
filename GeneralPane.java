@@ -269,7 +269,6 @@ public class GeneralPane extends BorderPane { //grid pane
 
     private void updateColumnGrade(int currentCourse) {
 
-        //so you're going to have to somehow calculate the grade for the indiv column
         try {
             String assignmentG = courseList.get(currentCourse).getAssignmentLinkedList().calculateGrade() + " - ";
             String quizG = courseList.get(currentCourse).getQuizLinkedList().calculateGrade() + " - ";

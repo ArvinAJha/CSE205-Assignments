@@ -97,7 +97,7 @@ public class AssignmentHonors extends Application
         launch(args);
     }
 
-    public void writeObject() {
+    private void writeObject() {
         try {
             FileOutputStream fileout = new FileOutputStream("courseList.ser");
             ObjectOutputStream objOut = new ObjectOutputStream(fileout);
