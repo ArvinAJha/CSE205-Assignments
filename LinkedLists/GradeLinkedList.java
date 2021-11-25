@@ -5,8 +5,6 @@ import java.io.Serializable;
 public class GradeLinkedList implements Serializable {
     private Grade head; //head of linked list
     private double numOfGrades;
-    // private double gradeSum;
-    // private double gradeValueTotal;
     
     //****** private class for singular grade ******/
     private class Grade implements Serializable {
@@ -40,65 +38,172 @@ public class GradeLinkedList implements Serializable {
         numOfGrades = 1;
     }
 
-    //****** methods *****/
-
-    //add grade to front of list
-    public void addToFront(double value, double totalValue, String name) {
-        numOfGrades++;
-
-        Grade newGrade = new Grade(value, totalValue, name, null);
-
-        if(head == null) {  //list empty
-            head = newGrade;
-        } else {
-            newGrade.next = head;
-            head = newGrade;
-        }
-    }
+    /****** linked list methods *****/
     
-    //add grade to end of list
+    /**
+     * add element to the end of the list
+     * @param value
+     * @param totalValue
+     * @param name
+     */
     public void add(double value, double totalValue, String name) {
         numOfGrades++;
 
         Grade newGrade = new Grade(value, totalValue, name, null);
 
+        //if list is empty
         if(head == null) {
             head = newGrade;
         } else {
             Grade last = head;
 
+            //iterate until you get to the last element 
             while(last.next != null) {
                 last = last.next;
             }
 
+            //add onto the next element after the last element
             last.next = newGrade;
         }
     }
 
+    /**
+     * remove element based on params
+     * @param name
+     * @param value
+     * @param totalValue
+     */
     public void remove(String name, double value, double totalValue) {
 
-        if(head != null) {  //list isnt empty
-            if(head.name.equalsIgnoreCase(name) && head.value == value && head.availablePoints == totalValue) {  //if element is first 
-                head = head.next;
-                numOfGrades--;
-            } else {    //if element is not at the start
-                Grade previous = head;
-                Grade current = head.next;
-
-                while(current != null && !current.name.equalsIgnoreCase(name) && current.value != value && current.availablePoints != totalValue) {
-                    previous = current;
-                    current = current.next;
-                }
-
-                if(current != null) {   //check if whatever ended the loop is the element wanted
-                    previous.next = current.next; //cut off current
-                    numOfGrades--;
-                }
-            }
-        }
+        
     }
 
-    public Grade getAtIndex(int pos) {
+    /**
+     * returns default toString method for element in pos
+     * @param pos
+     * @return name \n value/points
+     */
+    public String toStringAtIndex(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.name + ":\n" + current.value + "  /  " + current.availablePoints;
+    }
+    
+    /**
+     * 
+     * @return if the element is empty
+     */
+    public boolean isEmpty() {
+        return numOfGrades > 0;
+    }
+    
+    public void printList() {
+        for(int i = 0; i < getNumOfGrade(); i++) {
+            System.out.println(toStringAtIndex(i));
+        }
+    }
+    /* element varibale getters */
+    /**
+     * 
+     * @param pos
+     * @return name of element
+     */
+    public String getNameAtPos(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.name;
+    }
+
+    /**
+     * 
+     * @param pos
+     * @return points received at element
+     */
+    public double getValueAtPos(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.value;
+    }
+
+    /**
+     * 
+     * @param pos
+     * @return total points at element
+     */
+    public double getTotalPointsAtPos(int pos) {
+        Grade current = getAtIndex(pos);
+
+        return current.availablePoints;
+    }
+
+    /**
+     * 
+     * @return num of elements in the list
+     */
+    public double getNumOfGrade() {
+        return numOfGrades;
+    }
+
+    /* calculations for a single type of grade */
+
+    /**
+     * calculates the sum of all the points recieved in all elements
+     * @return sum of elements' points recieved
+     */
+    public double getGradeSum() {
+
+        Grade current = head;
+        double gradeSum = 0;
+
+        //if list is empty, return 0
+        if(current == null) {
+            return 0;
+        }
+        while(current != null) {    //iterate through entire list up until last element and add all the values 
+            gradeSum += current.value;
+            current = current.next;
+        }
+
+        return gradeSum;
+    }
+
+    /**
+     * sums all the available points
+     * @return sum of elements' available points
+     */
+    public double getAvailablePointsSum() {
+        Grade current = head;
+        double gradeValueTotal = 0;
+        if(current == null) {   //if empty, return 0
+            return 0;
+        }
+        while(current != null) {    //iterate through list and add available points
+            gradeValueTotal += current.availablePoints;
+            current = current.next;
+        }
+        return gradeValueTotal;
+    }
+    
+    /**
+     * calculates grade for a single type of grade
+     * @return points gotten sum / total points sum
+     */
+    public double calculateGrade() {
+
+        if(this.getNumOfGrade() > 0) {  //if there are grades
+            return this.getGradeSum() / this.getAvailablePointsSum();   //what you got / what was available
+        }
+
+        return 0;   //if there are no grades, return 0 to avoid exception
+    }
+
+    //helper methods
+    /**
+     * helper method used to get the element at a position
+     * @param pos
+     * @return Grade private class object
+     */
+    private Grade getAtIndex(int pos) {
         if(pos >= 0 && pos <= numOfGrades-1) {
             int count = 0; //temporary count 
 
@@ -115,84 +220,5 @@ public class GradeLinkedList implements Serializable {
             System.out.println("getAtIndex (grade) is out of bounds!");
             return null;
         }
-    }
-
-    public String toStringAtIndex(int pos) {
-        Grade current = getAtIndex(pos);
-
-        return current.name + ":\n" + current.value + "  /  " + current.availablePoints;
-    }
-
-    public String getNameAtPos(int pos) {
-        Grade current = getAtIndex(pos);
-
-        return current.name;
-    }
-
-    public double getValueAtPos(int pos) {
-        Grade current = getAtIndex(pos);
-
-        return current.value;
-    }
-
-    public double getTotalPointsAtPos(int pos) {
-        Grade current = getAtIndex(pos);
-
-        return current.availablePoints;
-    }
-
-    public void printList() { 
-        Grade current = head;
-
-        while(current != null) {
-            System.out.print("\nName: " + current.name + "\nValue: " + current.name + "\nTotal Value: " + current.availablePoints);
-            current = current.next;
-        }
-
-        System.out.println();
-    }
-
-    public double getNumOfGrade() {
-        return numOfGrades;
-    }
-
-    public boolean isEmpty() {
-        return numOfGrades > 0;
-    }
-
-    public double getGradeSum() { /** REMEMBER TO REST THE SUM WHEN U DELETE AN GRADE OR RESET THE THING */
-        Grade current = head;
-        double gradeSum = 0;
-        if(current == null) {
-            return 0;
-        }
-        while(current != null) {
-            gradeSum += current.value;
-            current = current.next;
-        }
-
-        return gradeSum;
-    }
-
-    public double getAvailablePointsSum() {       //calculates the stuff for the bottom of the grade fraction
-        //should be avaible value + available value ... until they have all been added
-        Grade current = head;
-        double gradeValueTotal = 0;
-        if(current == null) {
-            return 0;
-        }
-        while(current != null) {
-            gradeValueTotal += current.availablePoints;
-            current = current.next;
-        }
-        return gradeValueTotal;
-    }
-    
-    public double calculateGrade() {
-        if(this.getNumOfGrade() > 0) {
-            return this.getGradeSum() / this.getAvailablePointsSum();
-        }
-
-        return 0;
     }
 }

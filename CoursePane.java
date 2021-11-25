@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import javafx.scene.paint.Color;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,11 +20,7 @@ public class CoursePane extends ScrollPane {
     private Label errorLabel;
     private TextField courseName, courseCode, assignmentWorthField, quizWorthField, testWorthField;
     private CheckBox lowestTestDropped;
-    
-    private Button addCourseButton, removeCourseButton;
-
     private VBox coursesAddedBox;
-
     private GradePane gradePane;
 
     public CoursePane(GradePane gradePane, ComboBox<Course> courseDropDown, ArrayList<Course> courselist) {
@@ -84,8 +79,8 @@ public class CoursePane extends ScrollPane {
         fieldContainer.setPadding(new Insets(10, 10, 10, 10));
         
         //make buttons
-        addCourseButton = new Button("Add Course");
-        removeCourseButton = new Button("Remove Course");
+        Button addCourseButton = new Button("Add Course");
+        Button removeCourseButton = new Button("Remove Course");
 
             //listener
             addCourseButton.setOnAction(new ButtonHandler());
@@ -118,14 +113,16 @@ public class CoursePane extends ScrollPane {
         HBox finalBox = new HBox();
         finalBox.getChildren().addAll(leftSideBox, rightSideBox);
 
+        //add scroll to entire pane
         this.setContent(finalBox);
         
+        //update content in boxes and courses available
         updateBox();
         updateDropDown();
+
+        //update courses in dropdown in grade pane
         gradePane.updateDropDown();
     }
-
-    //MAKE SURE TO UPDATE THE DROP DOWN AFTER ADDING A COURSES
 
     /**
      * LISTENGERS
@@ -145,6 +142,7 @@ public class CoursePane extends ScrollPane {
             }
 
             try {
+                //get text for all data fields and options selected
                 String name = courseName.getText();
                 String code = courseCode.getText();
                 double worthPercentA = Double.parseDouble(assignmentWorthField.getText());
@@ -152,16 +150,20 @@ public class CoursePane extends ScrollPane {
                 double worthPercentT = Double.parseDouble(testWorthField.getText());
                 boolean isTestDropped = lowestTestDropped.isSelected();
 
+                //create course obj
                 Course newCourse = new Course(name, code, isTestDropped, worthPercentA, worthPercentQ, worthPercentT);
 
+                //check if course already exists
                 for(Course aCourse: courseList){
                     if(newCourse.toString().equalsIgnoreCase(aCourse.toString())) {
                         throw new Exception();
                     }
                 }
                 
+                //add to list
                 courseList.add(newCourse);
 
+                //reset fields
                 courseName.setText("");
                 courseCode.setText("");
                 assignmentWorthField.setText("");
@@ -176,6 +178,7 @@ public class CoursePane extends ScrollPane {
                 e.printStackTrace();
             }
 
+            //update listed courses and grades
             updateBox();
             updateDropDown();
             gradePane.updateDropDown();
@@ -183,7 +186,6 @@ public class CoursePane extends ScrollPane {
         }
         
     }
-
     private class CourseRemovalHandler implements EventHandler<ActionEvent> {
 
         @Override
@@ -193,23 +195,24 @@ public class CoursePane extends ScrollPane {
             errorLabel.setText("");
 
             try {
-                //list of all courses listed on the side
 
                 if(coursesAddedBox.getChildren().isEmpty()) {   //no courses selected to be removed
                     errorLabel.setText("No courses available for removal");
                     return;
                 }
 
+                //go through each course box
                 for(int i = 0; i < courseList.size(); i++) {
                     CheckBox box = (CheckBox) coursesAddedBox.getChildren().get(i);
 
+                    //if box is selected, remove it from list and gui 
                     if(box.isSelected()) {
-                        coursesAddedBox.getChildren().remove(i);
                         courseList.remove(i);
                         i--;
                     }
                 }
 
+                //update gui
                 updateDropDown();
                 gradePane.updateDropDown();
                 updateBox();
@@ -222,29 +225,32 @@ public class CoursePane extends ScrollPane {
     }
 
     //helper methods
+    //updates courses box on right
     private void updateBox() {
 
+        //remove all elements in gui
         coursesAddedBox.getChildren().clear();
-        // CourseRemovalHandler handler = new CourseRemovalHandler();
 
+        //iterate through courses
         for(int i = 0; i < courseList.size(); i++) {
 
             //create checkbox 
             CheckBox courseCheckBox = new CheckBox(courseList.get(i).toString());
             courseCheckBox.setPadding(new Insets(10, 10, 10, 10));
 
-            //add listener
-            // courseCheckBox.setOnAction(handler);
-
             //add to container
             coursesAddedBox.getChildren().addAll(courseCheckBox);
         }
     }
 
+    //updates drop down of coureses
     public void updateDropDown() {
+
+        //clears courses
         courseDropDown.getItems().clear();
 
         try {
+            //re-add all courses from list
             for(Course aCourse: courseList) {
                 courseDropDown.getItems().add(aCourse);
             }

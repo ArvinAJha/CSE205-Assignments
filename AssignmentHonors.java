@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -26,6 +25,7 @@ public class AssignmentHonors extends Application
     private GradePane gradePane;
 
     private ArrayList<Course> courseList;
+    private ComboBox<Course> courseDropDown;
 
     @Override
     @SuppressWarnings("unchecked")      //ignore this. it will just get rid of warnings.
@@ -36,9 +36,10 @@ public class AssignmentHonors extends Application
         try {
 
             //Read object from file
-            FileInputStream fileInput = new FileInputStream("courseList.ser");      //txt file??
+            FileInputStream fileInput = new FileInputStream("courseList.ser");
             ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 
+            //set list to object that has been read
             courseList = (ArrayList<Course>) objectInput.readObject();
 
             objectInput.close();
@@ -52,9 +53,12 @@ public class AssignmentHonors extends Application
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        ComboBox<Course> courseDropDown = new ComboBox<Course>();
-                
+        courseDropDown = new ComboBox<Course>();
+        
+        //hold all the tabs
         tabPane = new TabPane();
+        
+        //tabs
         generalPane = new GeneralPane(courseDropDown, courseList);
         anxietyPane = new AnxietyPane();
         gradePane = new GradePane(courseList);
@@ -76,16 +80,22 @@ public class AssignmentHonors extends Application
         tab4.setText("Add Grades");
         tab4.setContent(gradePane);
 
+        //no tabs are closable
         tab1.setClosable(false);
         tab2.setClosable(false);
         tab3.setClosable(false);
         tab4.setClosable(false);
 
-        tabPane.getSelectionModel().select(0);
+        //add all the tabs
         tabPane.getTabs().addAll(tab1, tab2, tab3, tab4);
 
+        //set default to first tab
+        tabPane.getSelectionModel().select(0);
+
+        //add tab holder to stack 
         rootPane.getChildren().add(tabPane);
 
+        //add stack to scene
         Scene scene = new Scene(rootPane, WINSIZE_X, WINSIZE_Y);
 
         stage.setTitle(WINTITLE);
@@ -99,10 +109,14 @@ public class AssignmentHonors extends Application
 
     private void writeObject() {
         try {
+            //open file and object writers
             FileOutputStream fileout = new FileOutputStream("courseList.ser");
             ObjectOutputStream objOut = new ObjectOutputStream(fileout);
 
+            //create object
             objOut.writeObject(courseList);
+            
+            //flush all data onto courselist
             objOut.flush();
             objOut.close();
         } catch (FileNotFoundException e) {

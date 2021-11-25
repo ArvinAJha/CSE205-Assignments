@@ -9,6 +9,9 @@ public class AssignmentLinkedList extends GradeLinkedList{
         super(points, totalPoints, name);
     }
 
+    /**
+     * Customized toString method
+     */
     @Override
     public String toStringAtIndex(int pos) {
         return super.getNameAtPos(pos) + ": \n" + super.getValueAtPos(pos) + "/" + super.getTotalPointsAtPos(pos)

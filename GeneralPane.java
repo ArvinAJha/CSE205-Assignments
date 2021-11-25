@@ -15,14 +15,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class GeneralPane extends BorderPane { //grid pane
+public class GeneralPane extends BorderPane {
 
     private ArrayList<Course> courseList; 
-
     private ComboBox<Course> courseDropDown;
-
     private VBox assignmentsBox, quizBox, testBox;
-
     private Label finalGradeLabel;
     private Label assignmentGradeLabel, assignmentWorth, quizGradeLabel, quizWorth, testGradeLabel, testWorth;
 
@@ -42,6 +39,7 @@ public class GeneralPane extends BorderPane { //grid pane
         topBox.add(courseDropDown, 0, 0);
         topBox.add(finalGradeLabel, 1, 0);
 
+        //top box gui settings
         topBox.setVgap(5);
         topBox.setHgap(5);
 
@@ -170,10 +168,6 @@ public class GeneralPane extends BorderPane { //grid pane
         GridPane.setVgrow(testNode, Priority.ALWAYS);
         GridPane.setHgrow(testNode, Priority.ALWAYS);
 
-
-
-
-
         /**
          * Placement to tab
          */
@@ -187,11 +181,7 @@ public class GeneralPane extends BorderPane { //grid pane
         this.setTop(topBox);
         this.setCenter(finalPane);
 
-        
-
     }
-
-
     private class DropDownListener implements EventHandler<ActionEvent> {
 
         @Override
@@ -212,12 +202,16 @@ public class GeneralPane extends BorderPane { //grid pane
 
     }
 
+    //helper classes 
+    
+    //update columns
     private void updateColumns(int currentCourse) {
 
         if(courseList.size() < 1) {    //when there are no courses, do not update anything
             return;
         }
 
+        //clear all columns
         assignmentsBox.getChildren().clear();
         quizBox.getChildren().clear();
         testBox.getChildren().clear();
@@ -230,17 +224,21 @@ public class GeneralPane extends BorderPane { //grid pane
 
     }
 
+    //help update each indiv column
     private void updateColumnHelper(GradeLinkedList list, String box) {
         int count = 0;
 
         try {
             while(count < list.getNumOfGrade()) {           //while count < size()
+
+                //make new node for each grade in entered list
                 CheckBox newCourseCheckBox = new CheckBox();
                 newCourseCheckBox.setPadding(new Insets(10, 10, 10, 10));
 
                 String assignmentVals = list.toStringAtIndex(count);
                 newCourseCheckBox.setText(assignmentVals);
     
+                //add node to specific column
                 if(box.equals("Assignment"))
                     assignmentsBox.getChildren().addAll(newCourseCheckBox);
                 else if(box.equals("Quiz"))
@@ -249,13 +247,15 @@ public class GeneralPane extends BorderPane { //grid pane
                     testBox.getChildren().addAll(newCourseCheckBox);
 
     
-                count++;
+                count++;    //iterate through list
             }
         } catch (IndexOutOfBoundsException e) {}
     }
 
+    //update worth of gradetype
     private void updateWorth(int currentCourse) {
 
+        //get new worth for each grade type and set it to the text
         try {
             String assignmentW = courseList.get(currentCourse).getAssignmentWorth() + "%";
             String quizW = courseList.get(currentCourse).getQuizWorth() + "%";
@@ -267,8 +267,10 @@ public class GeneralPane extends BorderPane { //grid pane
         } catch (Exception e) {}
     }
 
+    //updates grade percentage for each grade type
     private void updateColumnGrade(int currentCourse) {
 
+        //get caluclations and add to text
         try {
             String assignmentG = courseList.get(currentCourse).getAssignmentLinkedList().calculateGrade() + " - ";
             String quizG = courseList.get(currentCourse).getQuizLinkedList().calculateGrade() + " - ";
@@ -280,8 +282,10 @@ public class GeneralPane extends BorderPane { //grid pane
         } catch (Exception e) {}
     }
 
+    //update final grade for top right label
     private String getFinalGradeString(int currentCourse) {
 
+        //calculate final and set to text
         try {
             return "" + courseList.get(currentCourse).calculateFinal();
         } catch (Exception e) {

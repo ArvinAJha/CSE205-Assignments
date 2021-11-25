@@ -1,12 +1,10 @@
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import LinkedLists.GradeLinkedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,10 +28,6 @@ public class GradePane extends BorderPane {
 
     private Label errorLabel;
     private TextField gradeName, pointsReceived, pointsAvailable;
-    
-    private Button addGradeButton;
-    private Button removeGradeButton;
-
     private VBox gradesAddedBox;
     
     public GradePane(ArrayList<Course> courselist) {
@@ -94,8 +88,8 @@ public class GradePane extends BorderPane {
         fieldContainer.setPadding(new Insets(10, 10, 10, 10));
         
         //make buttons
-        addGradeButton = new Button("Add");
-        removeGradeButton = new Button("Remove");
+        Button addGradeButton = new Button("Add");
+        Button removeGradeButton = new Button("Remove");
 
             //button listener
             addGradeButton.setOnAction(new GradeButtonHandler());
@@ -159,9 +153,9 @@ public class GradePane extends BorderPane {
 
     private class GradeButtonHandler implements EventHandler<ActionEvent> {
 
-        String name;
-        double points;
-        double total;
+        private String name;
+        private double points;
+        private double total;
 
         @Override
         public void handle(ActionEvent event) {
@@ -223,8 +217,7 @@ public class GradePane extends BorderPane {
 
                 if(gradetype.equals("Assignment")) {
                     grades = courseList.get(courseIndex).getAssignmentLinkedList();
-                }
-                else if(gradetype.equals("Quiz")) {
+                } else if(gradetype.equals("Quiz")) {
                     grades = courseList.get(courseIndex).getQuizLinkedList();
                 } else {
                     grades = courseList.get(courseIndex).getTestLinkedList();
@@ -247,13 +240,17 @@ public class GradePane extends BorderPane {
             CheckBox box = (CheckBox) gradesAddedBox.getChildren().get(i);
 
             if(box.isSelected()) {
-                gradesAddedBox.getChildren().remove(i);
+                // gradesAddedBox.getChildren().remove(i);
 
                 /**
                  * Bro change the remove method later please
                  */
+                grades.printList();
                 grades.remove(grades.getNameAtPos(i), grades.getValueAtPos(i), grades.getTotalPointsAtPos(i));
-                i--;
+                System.out.println("________________________");
+                grades.printList();
+                //i--;
+
             }
         }
     }
@@ -264,6 +261,9 @@ public class GradePane extends BorderPane {
 
         try {
             int courseIndex = courseDropDown.getSelectionModel().getSelectedIndex();
+            if(courseIndex < 0) {
+                return;
+            }
             Course course = courseList.get(courseIndex);
 
             String gradeType = gradeDropDown.getSelectionModel().getSelectedItem();
@@ -274,7 +274,10 @@ public class GradePane extends BorderPane {
                 case "Test": helpUpdate(course.getTestLinkedList()); break;
             }
 
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            errorLabel.setText("some error");
+            e.printStackTrace();
+        }
 
         try {
             FileOutputStream fileout = new FileOutputStream("courseList.ser");
