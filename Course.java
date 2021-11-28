@@ -35,6 +35,7 @@ public class Course implements Serializable {
         this.assignmentPercentWorth = assignmentWorth;
         this.quizWorth = quizWorth;
         this.testWorth = testWorth;
+        this.lowestTestDropped = lowestTestDropped;
     }
 
     /**

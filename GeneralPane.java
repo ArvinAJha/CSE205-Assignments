@@ -190,14 +190,8 @@ public class GeneralPane extends BorderPane {
             //find current course num on dropdown
             int currentCourse = courseDropDown.getSelectionModel().getSelectedIndex();
 
-            //update columns (just assignments for now)
-            updateColumns(currentCourse);
-
-            //update final and sub grades
-            finalGradeLabel.setText(getFinalGradeString(currentCourse));
-
-            updateWorth(currentCourse);
-            updateColumnGrade(currentCourse);
+            //update the entire screen for all the changes to the grades: either added or subtracted
+            updateGradesRecieved(currentCourse);
         }
 
     }
@@ -293,4 +287,16 @@ public class GeneralPane extends BorderPane {
         }
     }
 
+    public void updateGradesRecieved(int currentCourse) {
+        courseDropDown.getSelectionModel().select(currentCourse);
+
+        //update columns
+        updateColumns(currentCourse);
+
+        //update final and sub grades
+        finalGradeLabel.setText(getFinalGradeString(currentCourse));
+
+        updateWorth(currentCourse);
+        updateColumnGrade(currentCourse);
+    }
 }

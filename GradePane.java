@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 public class GradePane extends BorderPane {
 
     private ArrayList<Course> courseList;
+    private GeneralPane generalPane;
     private ComboBox<Course> courseDropDown;
     private ComboBox<String> gradeDropDown;
 
@@ -30,8 +31,9 @@ public class GradePane extends BorderPane {
     private TextField gradeName, pointsReceived, pointsAvailable;
     private VBox gradesAddedBox;
     
-    public GradePane(ArrayList<Course> courselist) {
+    public GradePane(GeneralPane generalPane, ArrayList<Course> courselist) {
         this.courseList = courselist;
+        this.generalPane = generalPane;
 
         //containers
         HBox addGradeContainer = new HBox();       //holds added courses and fields to add more courses
@@ -166,19 +168,50 @@ public class GradePane extends BorderPane {
 
             try {
 
+                //if any field is empty, display error message
+                if(gradeName.getText().isEmpty() || pointsAvailable.getText().isEmpty() || pointsReceived.getText().isEmpty()) {
+                    errorLabel.setText("Please fill in all fields");
+                    return;
+                }
+
                 name = gradeName.getText();
                 points = Double.parseDouble(pointsReceived.getText());
                 total = Double.parseDouble(pointsAvailable.getText());
 
                 if(gradeType.equalsIgnoreCase("Assignment")) {
-                    courseList.get(courseIndex).getAssignmentLinkedList().add(points, total, name);
+
+                    GradeLinkedList list = courseList.get(courseIndex).getAssignmentLinkedList();
+                    for(int i = 0; i < list.getNumOfGrade(); i++) {
+                        if(list.getNameAtPos(i).equalsIgnoreCase(name)) {
+                            errorLabel.setText("There are duplicate grades being added. Please change the name");
+                            return;
+                        }
+                    }
+                    list.add(points, total, name);
                 } else if(gradeType.equalsIgnoreCase("Quiz")) {
-                    courseList.get(courseIndex).getQuizLinkedList().add(points, total, name);
+
+                    GradeLinkedList list = courseList.get(courseIndex).getQuizLinkedList();
+                    for(int i = 0; i < list.getNumOfGrade(); i++) {
+                        if(list.getNameAtPos(i).equalsIgnoreCase(name)) {
+                            errorLabel.setText("There are duplicate grades being added. Please change the name");
+                            return;
+                        }
+                    }
+                    list.add(points, total, name);
                 } else {
-                    courseList.get(courseIndex).getTestLinkedList().add(points, total, name);
+
+                    GradeLinkedList list = courseList.get(courseIndex).getTestLinkedList();
+                    for(int i = 0; i < list.getNumOfGrade(); i++) {
+                        if(list.getNameAtPos(i).equalsIgnoreCase(name)) {
+                            errorLabel.setText("There are duplicate grades being added. Please change the name");
+                            return;
+                        }
+                    }
+                    list.add(points, total, name);
                 }
 
                 updateGradeBox();
+                generalPane.updateGradesRecieved(courseIndex);
 
                 gradeName.setText("");
                 pointsReceived.setText("");
@@ -225,9 +258,11 @@ public class GradePane extends BorderPane {
 
                 removeGrades(grades);
                 updateGradeBox();
+                generalPane.updateGradesRecieved(courseIndex);
 
             } catch(NullPointerException e) {
                 errorLabel.setText("No courses selected");
+                System.out.println("null");
             } catch (IndexOutOfBoundsException e) {
                 errorLabel.setText("No courses selected");
             }
@@ -240,16 +275,8 @@ public class GradePane extends BorderPane {
             CheckBox box = (CheckBox) gradesAddedBox.getChildren().get(i);
 
             if(box.isSelected()) {
-                // gradesAddedBox.getChildren().remove(i);
-
-                /**
-                 * Bro change the remove method later please
-                 */
-                grades.printList();
-                grades.remove(grades.getNameAtPos(i), grades.getValueAtPos(i), grades.getTotalPointsAtPos(i));
-                System.out.println("________________________");
-                grades.printList();
-                //i--;
+                grades.remove(i);
+                i--;
 
             }
         }

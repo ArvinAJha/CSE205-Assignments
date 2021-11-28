@@ -1,91 +1,145 @@
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.text.Font;
 
 public class AnxietyPane extends BorderPane {
 
-    private Label gpaLabel, topLeftLabel, topRightLabel, botLeftLabel, botRightLabel;
+    private Label leftLabel, rightLabel;
+    private ArrayList<Course> courseList;
+    private ComboBox<Course> courseDropDown;
 
-    public AnxietyPane() {
+    /**
+     * The leftmost quadrant displays a random anxiety inducing message and 
+     * the rightmost quadrant displays what the future grade will be needed to maintain the current grade.
+     */
+
+    public AnxietyPane(ArrayList<Course> courseList) {
+
+        this.courseList = courseList;
 
         //refresh button
-        Button refreshButton = new Button();
+        Button refreshButton = new Button("Refresh");
         refreshButton.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
+        refreshButton.setPrefHeight(AssignmentHonors.WINSIZE_Y/8);
         
         //listener
         refreshButton.setOnAction(new ButtonHanlder());
 
-        //gpa label
-        gpaLabel = new Label("0.0");
-        gpaLabel.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
+        //course drop down
+        courseDropDown = new ComboBox<Course>();
+        courseDropDown.setPrefWidth(AssignmentHonors.WINSIZE_X/2);
+        courseDropDown.setPrefHeight(AssignmentHonors.WINSIZE_Y/8);
+        courseDropDown.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
 
         //top part of the pane - horizontal alignment
         GridPane topPane = new GridPane();
-        topPane.add(gpaLabel, 0, 0);
+        topPane.add(courseDropDown, 0, 0);
         topPane.add(refreshButton, 1, 0);
 
         topPane.setPrefWidth(AssignmentHonors.WINSIZE_X);
         GridPane.setHgrow(topPane, Priority.ALWAYS);
 
-        topLeftLabel = new Label("first");
-        topLeftLabel.setPrefSize(AssignmentHonors.WINSIZE_X/2, AssignmentHonors.WINSIZE_Y/2);
-        // label1.setStyle("-fx-background-color: white");
-        topLeftLabel.setAlignment(Pos.CENTER);
+        leftLabel = new Label("");
+        leftLabel.setPrefSize(AssignmentHonors.WINSIZE_X/2, AssignmentHonors.WINSIZE_Y/2);
+        leftLabel.setFont(new Font(30));
+        leftLabel.setAlignment(Pos.CENTER);
+        leftLabel.setWrapText(true);
 
-        topRightLabel = new Label("second");
-        topRightLabel.setPrefSize(AssignmentHonors.WINSIZE_X/2, AssignmentHonors.WINSIZE_Y/2);
-        // label2.setStyle("-fx-background-color: black");
-        topRightLabel.setAlignment(Pos.CENTER);
+        rightLabel = new Label("");
+        rightLabel.setPrefSize(AssignmentHonors.WINSIZE_X/2, AssignmentHonors.WINSIZE_Y/2);
+        rightLabel.setFont(new Font(30));
+        rightLabel.setAlignment(Pos.CENTER);
+        rightLabel.setWrapText(true);
 
-        botLeftLabel = new Label("third");
-        botLeftLabel.setPrefSize(AssignmentHonors.WINSIZE_X/2, AssignmentHonors.WINSIZE_Y/2);
-        // label3.setStyle("-fx-background-color: red");
-        botLeftLabel.setAlignment(Pos.CENTER);
+        GridPane grid = new GridPane();
+        grid.add(leftLabel, 0, 0);
+        grid.add(rightLabel, 1, 0);
 
-        botRightLabel = new Label("fourth");
-        botRightLabel.setPrefSize(AssignmentHonors.WINSIZE_X/2, AssignmentHonors.WINSIZE_Y/2);
-        // label4.setStyle("-fx-background-color: blue");
-        botRightLabel.setAlignment(Pos.CENTER);
-
-        GridPane square = new GridPane();
-        square.add(topLeftLabel, 0, 0);
-        square.add(topRightLabel, 1, 0);
-        square.add(botLeftLabel, 0, 1);
-        square.add(botRightLabel, 1, 1);
-
-        // GridPane.setVgrow(square, Priority.ALWAYS);
-        // GridPane.setHgrow(square, Priority.ALWAYS);
-
-        square.setAlignment(Pos.CENTER);
+        grid.setAlignment(Pos.CENTER);
 
         this.setTop(topPane);
-        this.setCenter(square);
+        this.setCenter(grid);
+
+        updateDropDown();
     }
     private class ButtonHanlder implements EventHandler<ActionEvent> {
 
         @Override
         public void handle(ActionEvent event) {
             try {
-                topLeftLabel.setText(predictSomething());
-                topRightLabel.setText(predictSomething());
-                botLeftLabel.setText(predictSomething());
-                botRightLabel.setText(predictSomething());
+                int index = courseDropDown.getSelectionModel().getSelectedIndex();
+                courseDropDown.getSelectionModel().select(index);
 
-                gpaLabel.setText(predictSomething());
-            } catch (Exception e) {
-                System.out.println("UH OH");
+                leftLabel.setText(generateAnxietyMessage());
+                rightLabel.setText(predictGrade(index));
+
+            } catch(IndexOutOfBoundsException ex) {
+                leftLabel.setText("There are no courses selected");
+                rightLabel.setText("There are no courses selected");
             }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            updateDropDown();
         }
 
     }
 
-    private String predictSomething() {
-        return "STUP";
+    private String predictGrade(int courseIndex) {
+        Course current = courseList.get(courseIndex);
+        String message = "";
+        double finalgrade = current.calculateFinal();
+
+        if(finalgrade < 60) {
+            return "You're grade is so low that you don't need me to tell you how much trouble you're in";
+        } else {
+
+            double halfgrade = current.getQuizLinkedList().calculateGrade() * current.getQuizWorth() + 
+                                current.getAssignmentLinkedList().calculateGrade() * current.getAssignmentWorth();
+
+            for(int i = 100; i > 0; i--) {
+
+                double testGrade = current.getTestLinkedList().calculateGrade(i, 100) * current.getTestWorth();
+                double newFinal = testGrade + halfgrade;
+                System.out.println("new" + newFinal + "\nfinal: " + finalgrade);
+
+                if(newFinal < finalgrade-10 && newFinal > finalgrade-20) {
+                    return "If you get a " + i + "% on the next test, you're going to have " + newFinal + "% for the class";
+                } else {
+                    message = "looks like everythings ok...for now";
+                }
+            }
+
+        }
+        return message;
+    }
+
+    private String generateAnxietyMessage() {
+        //random message generator
+        return "ha";
+    }
+
+    private void updateDropDown() {
+
+        //clears courses
+        courseDropDown.getItems().clear();
+
+        try {
+            //re-add all courses from list
+            for(Course aCourse: courseList) {
+                courseDropDown.getItems().add(aCourse);
+            }
+        } catch (Exception e) {}
     }
     
 }

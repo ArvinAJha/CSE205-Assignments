@@ -73,8 +73,34 @@ public class GradeLinkedList implements Serializable {
      * @param value
      * @param totalValue
      */
-    public void remove(String name, double value, double totalValue) {
+    public void remove(int index) {
 
+        if(index < 0 || index >= numOfGrades) {  //throw ex when out of bounds
+            System.out.println(index);
+        }
+
+        Grade previous = head;
+        Grade current = head.next;
+        int count = 1;
+
+        if(index == 0 && head != null) {
+            head = head.next;
+            numOfGrades--;
+        }
+
+        while(count <= index) {
+            previous = current;
+            current = current.next;
+            count++;
+
+            if(count == index && current == null) {
+                previous.next = null;
+                numOfGrades--;
+            } else if(count == index && current != null) {
+                previous.next = current.next;
+                numOfGrades--;
+            }
+        }
         
     }
 

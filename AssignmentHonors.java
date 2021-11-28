@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 public class AssignmentHonors extends Application
 {
-    public static final String WINTITLE = "Honors Project";
+    public static final String WINTITLE = "Heart Attack Calculator";
     public static final int WINSIZE_X = 800, WINSIZE_Y = 400;
 
     private TabPane tabPane;
@@ -60,8 +60,8 @@ public class AssignmentHonors extends Application
         
         //tabs
         generalPane = new GeneralPane(courseDropDown, courseList);
-        anxietyPane = new AnxietyPane();
-        gradePane = new GradePane(courseList);
+        anxietyPane = new AnxietyPane(courseList);
+        gradePane = new GradePane(generalPane, courseList);
         coursePane = new CoursePane(gradePane, courseDropDown, courseList);
 
         Tab tab1 = new Tab();

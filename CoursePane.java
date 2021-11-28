@@ -151,8 +151,7 @@ public class CoursePane extends ScrollPane {
                 boolean isTestDropped = lowestTestDropped.isSelected();
 
                 //create course obj
-                Course newCourse = new Course(name, code, isTestDropped, worthPercentA, worthPercentQ, worthPercentT);
-
+                Course newCourse = new Course(name, code, isTestDropped, worthPercentA, worthPercentT, worthPercentQ);
                 //check if course already exists
                 for(Course aCourse: courseList){
                     if(newCourse.toString().equalsIgnoreCase(aCourse.toString())) {
