@@ -15,7 +15,7 @@ public class AssignmentLinkedList extends GradeLinkedList{
     @Override
     public String toStringAtIndex(int pos) {
         return super.getNameAtPos(pos) + ": \n" + super.getValueAtPos(pos) + "/" + super.getTotalPointsAtPos(pos)
-                + "  [" + super.getValueAtPos(pos)/super.getTotalPointsAtPos(pos) + "%]  ";
+                + "  [" + super.getValueAtPos(pos)/super.getTotalPointsAtPos(pos) + "]  ";
     }
 
     //maybe change the toString methods as well but eh yknow 
